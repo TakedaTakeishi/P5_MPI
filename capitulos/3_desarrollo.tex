@@ -1,0 +1,134 @@
+% ==========================================
+% CAPÍTULO 3: DESARROLLO / RESULTADOS Y PRUEBAS
+% ==========================================
+
+
+% ==========================================
+% INSTRUCCIONES GENERALES PARA ESTE CAPÍTULO:
+% ==========================================
+% 1. Se recomienda escribir con propias palabras (el profe lo aprecia).
+% 2. Se sugiere ser específico: podrías mencionar qué funciones de MPI usaste y POR QUÉ.
+% 3. Sería conveniente explicar el FLUJO de tu programa paso a paso.
+% 4. Incluir fragmentos de código, pero solo los más relevantes.
+% 5. Se sugiere que las capturas de pantalla sean claras y legibles.
+% ==========================================
+
+% Responsable: Luna.
+
+\chapter{Resultados y pruebas}
+% Ejemplo: "En este capítulo se presenta el desarrollo del sistema de...
+%           Se detalla el diseño del código fuente, las funciones MPI
+%           utilizadas y la evidencia de ejecución en el cluster."
+
+\section{Desarrollo del Sistema}
+
+% ==========================================
+% SUGERENCIAS
+% ==========================================
+% 1. Podrías explicar el PROBLEMA que resuelve tu programa.
+%    - ¿Qué cálculo realiza? (ej. suma de vectores, multiplicación de matrices,
+%      aproximación de pi, ordenamiento paralelo, etc.)
+%    - ¿Por qué es adecuado resolverlo con MPI?
+%
+% 2. Se sugiere describir la ESTRATEGIA DE PARALELIZACIÓN.
+%    - ¿Cómo dividiste el trabajo entre los procesos? (división de dominio,
+%      división de tareas, maestro-esclavo, etc.)
+%    - ¿Cuántos procesos usaste y por qué?
+%
+% 3. Opcionalmente, podrías mencionar las FUNCIONES MPI CLAVE que utilizaste.
+%    - Ejemplos: MPI_Init, MPI_Comm_size, MPI_Comm_rank, MPI_Send, MPI_Recv,
+%      MPI_Bcast, MPI_Scatter, MPI_Gather, MPI_Reduce, MPI_Finalize, etc.
+%    - Se recomienda no solo listarlas, sino explicar PARA QUÉ las usaste en el programa.
+%
+% 4. Diagrama de flujo (completamente opcional).
+%    - Si lo deseas, podrías incluir un diagrama simple del flujo de comunicación entre procesos.
+%    - Quizás guardes la imagen en imagenes/ e la insertes con \includegraphics.
+% ==========================================
+
+% TIP: Si tu práctica tiene varios ejercicios, podrías crear una subsección para cada uno:
+%      \subsection{Ejercicio 1: Suma de vectores}
+%      \subsection{Ejercicio 2: Producto punto}
+
+\section{Diseño y Código Fuente}
+
+% ==========================================
+% SUGERENCIAS
+% ==========================================
+% 1. Se sugiere presentar los FRAGMENTOS DE CÓDIGO MÁS IMPORTANTES.
+%    - Podrías seleccionar las partes clave.
+%    - Ejemplos de fragmentos útiles:
+%      * Inicialización de MPI y obtención del rank/size.
+%      * Distribución de datos (Scatter/Broadcast).
+%      * Cálculo principal en cada proceso.
+%      * Recolección de resultados (Gather/Reduce).
+%
+% 2. Se recomienda usar el entorno `lstlisting` PARA CÓDIGO.
+%    Ejemplo:
+%    \begin{lstlisting}[language=C++, caption=Inicializacion MPI]
+%    int rank, size;
+%    MPI_Init(&argc, &argv);
+%    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+%    MPI_Comm_size(MPI_COMM_WORLD, &size);
+%    \end{lstlisting}
+%
+% 3. Podrías comentar cada fragmento de código con tu propia explicación.
+%    - ¿Qué hace esta parte del código?
+%    - ¿Por qué es importante para la paralelización?
+%
+% 4. Se sugiere explicar el ALGORITMO detalladamente.
+%    - Pseudocódigo o descripción paso a paso.
+%    - Complejidad computacional (si aplica).
+% ==========================================
+
+% TIP: Si el código es muy largo, coloca la versión completa en el APÉNDICE
+%      y aquí solo pon los fragmentos más relevantes con explicación.
+
+% TIP: La plantilla ya incluye el paquete `listings` configurado.
+%      Si necesitas resaltar sintaxis de C/C++, usa:
+%      \begin{lstlisting}[language=C++, caption=Titulo del codigo]
+
+\section{Evidencia de Ejecución}
+
+% ==========================================
+% SUGERENCIAS
+% ==========================================
+% 1. Se recomienda incluir CAPTURAS DE PANTALLA DE LA EJECUCIÓN.
+%    - Podrías mostrar el comando que usaste para compilar.
+%    - Sería útil mostrar el comando que usaste para ejecutar (mpirun/mpiexec).
+%    - Se sugiere mostrar la SALIDA del programa con diferentes números de procesos.
+%
+% 2. Opcionalmente, COMPARACIÓN DE RESULTADOS.
+%    - ¿Los resultados con 2, 4 y 8 procesos son consistentes?
+%    - ¿Se observa mejora en el tiempo de ejecución?
+%
+% 3. Se sugiere una TABLA DE RESULTADOS.
+%    - Podrías usar el entorno `table` para presentar tiempos de ejecución.
+%    Ejemplo:
+%    \begin{table}[h]
+%    \centering
+%    \begin{tabular}{|c|c|c|}
+%    \hline
+%    \textbf{Procesos} & \textbf{Tamaño} & \textbf{Tiempo (s)} \\
+%    \hline
+%    1 & 1000 & 0.05 \\
+%    2 & 1000 & 0.03 \\
+%    4 & 1000 & 0.02 \\
+%    \hline
+%    \end{tabular}
+%    \caption{Tiempos de ejecución para N=1000}
+%    \end{table}
+%
+% 4. GRÁFICAS (completamente opcional, pero muy profesional).
+%    - Si lo deseas, podrías incluir gráficas de speedup o eficiencia.
+%    - Se recomienda guardar las imágenes en la carpeta imagenes/.
+% ==========================================
+
+% TIP: Para insertar imágenes, podrías usar:
+%      \begin{figure}[h]
+%      \centering
+%      \includegraphics[width=0.8\textwidth]{imagenes/captura1.png}
+%      \caption{Ejecución con 4 procesos}
+%      \end{figure}
+%
+%      Se sugiere verificar que la imagen exista en la carpeta imagenes/.
+
