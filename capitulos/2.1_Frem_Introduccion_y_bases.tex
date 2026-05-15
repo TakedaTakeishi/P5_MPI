@@ -11,4 +11,61 @@
 % * Ventajas y desventajas.
 % * Aplicaciones de MPI.
 
+\section{Introducción y conceptos básicos de MPI}
 
+MPI (Message Passing Interface) es un estándar de programación diseñado para el desarrollo de aplicaciones de cómputo paralelo y distribuido. Su principal función consiste en permitir la comunicación entre distintos procesos que trabajan de manera simultánea, incluso cuando se ejecutan en diferentes nodos o procesadores dentro de un sistema de alto rendimiento. A diferencia de otras tecnologías de paralelismo que dependen de memoria compartida, MPI utiliza un modelo basado en el intercambio de mensajes, lo que permite que cada proceso tenga su propio espacio de memoria y pueda comunicarse mediante el envío y recepción de datos. Este enfoque ha permitido que MPI sea ampliamente utilizado en entornos científicos, académicos e industriales debido a su capacidad para adaptarse tanto a pequeñas computadoras como a supercomputadoras con miles de procesadores \cite{ref1_frem,ref6_frem}.
+
+El objetivo principal de MPI es optimizar la ejecución de programas mediante la división de tareas en múltiples procesos que trabajan en paralelo. Gracias a ello, es posible reducir considerablemente el tiempo de procesamiento de operaciones complejas, mejorar el aprovechamiento de los recursos de hardware y aumentar la eficiencia computacional en aplicaciones que requieren grandes cantidades de cálculos. MPI proporciona un conjunto de funciones estandarizadas para coordinar la comunicación entre procesos, sincronizar tareas y compartir información de forma ordenada y segura. Además, su diseño portable permite que los programas desarrollados bajo este estándar puedan ejecutarse en diferentes arquitecturas sin necesidad de modificar gran parte del código fuente, convirtiéndose en una herramienta fundamental para el desarrollo de aplicaciones de alto rendimiento \cite{ref2_frem,ref3_frem}.
+
+\subsection{Importancia del procesamiento paralelo y características principales de MPI}
+
+El procesamiento paralelo se ha convertido en una necesidad dentro del área de la computación moderna debido al incremento constante en la cantidad de datos y en la complejidad de los problemas que requieren ser resueltos. Muchas aplicaciones actuales relacionadas con inteligencia artificial, simulaciones científicas, análisis de grandes volúmenes de información y modelado matemático necesitan tiempos de respuesta cada vez menores, por lo que el uso de un solo procesador resulta insuficiente. En este contexto, MPI representa una alternativa eficiente al permitir que varias tareas se ejecuten simultáneamente mediante múltiples procesos coordinados. Gracias a ello, se mejora el rendimiento general del sistema y se aprovechan de mejor manera los recursos disponibles en arquitecturas multiprocesador y clústeres de computadoras \cite{ref4_frem,ref5_frem}.
+
+Además de su relevancia en el cómputo paralelo, MPI posee diversas características que lo han consolidado como uno de los estándares más utilizados en programación paralela. Entre dichas características se encuentran la portabilidad entre sistemas operativos y arquitecturas, la escalabilidad para trabajar con cientos o miles de procesos, el uso de comunicación punto a punto y colectiva, así como la sincronización eficiente entre procesos. Estas propiedades permiten desarrollar aplicaciones robustas y con un alto desempeño computacional. En la Tabla \ref{tab:caracteristicasMPI} se presentan algunas de las características más importantes de MPI junto con una breve descripción de cada una de ellas.
+
+\begin{table}[H]
+\centering
+\caption{Tabla 2.1. Características principales de MPI \cite{ref1_frem}}
+\label{tab:caracteristicasMPI}
+\begin{tabular}{|p{4cm}|p{9cm}|}
+\hline
+\textbf{Característica} & \textbf{Descripción} \\ \hline
+Portabilidad & Permite ejecutar programas en diferentes sistemas y arquitecturas sin modificar significativamente el código. \\ \hline
+Escalabilidad & Puede trabajar desde pocos procesos hasta miles de ellos en supercomputadoras y clústeres. \\ \hline
+Comunicación por mensajes & Los procesos intercambian información mediante el envío y recepción de mensajes. \\ \hline
+Modelo distribuido & Cada proceso posee su propio espacio de memoria independiente. \\ \hline
+Comunicación colectiva & Incluye operaciones grupales como difusión, reducción y sincronización. \\ \hline
+Compatibilidad con C y Fortran & Puede implementarse en diversos lenguajes utilizados en programación científica. \\ \hline
+\end{tabular}
+\end{table}
+
+Las características anteriormente descritas permiten comprender por qué MPI continúa siendo una de las tecnologías más utilizadas en sistemas de alto rendimiento. Su capacidad para administrar múltiples procesos y coordinar la comunicación entre ellos facilita el desarrollo de aplicaciones complejas que requieren rapidez y eficiencia computacional. Asimismo, el hecho de que MPI sea un estándar ampliamente documentado y respaldado por distintas implementaciones como OpenMPI y MPICH contribuye a que continúe vigente en el ámbito académico y profesional \cite{ref7_frem,ref8_frem}.
+
+\subsection{Ventajas y desventajas de MPI}
+
+El uso de MPI ofrece múltiples ventajas dentro del desarrollo de aplicaciones paralelas, especialmente en escenarios donde se requiere distribuir tareas complejas entre diferentes procesadores. Una de las principales ventajas consiste en la reducción del tiempo de ejecución de los programas, ya que varias operaciones pueden realizarse simultáneamente. También destaca su capacidad para trabajar en sistemas distribuidos, permitiendo aprovechar clústeres y supercomputadoras de forma eficiente. Además, MPI proporciona una gran flexibilidad para controlar la comunicación entre procesos y optimizar el uso de recursos computacionales, lo que resulta útil en aplicaciones científicas, simulaciones matemáticas y procesamiento masivo de datos \cite{ref2_frem,ref1_frem}.
+
+Sin embargo, MPI también presenta ciertas desventajas que deben considerarse durante el desarrollo de programas paralelos. La complejidad de programación puede incrementarse debido a la necesidad de coordinar correctamente los procesos y gestionar la comunicación entre ellos. Asimismo, errores relacionados con sincronización o intercambio de mensajes pueden dificultar la depuración del código. Otro aspecto importante es que el rendimiento puede verse afectado cuando existe un exceso de comunicación entre procesos, generando tiempos de espera y sobrecarga en la red. En la Tabla \ref{tab:ventajasDesventajasMPI} se muestra una comparación entre algunas ventajas y desventajas relevantes de MPI.
+
+\begin{table}[H]
+\centering
+\caption{Tabla 2.2. Comparación de ventajas y desventajas de MPI \cite{ref2_frem}}
+\label{tab:ventajasDesventajasMPI}
+\begin{tabular}{|p{6cm}|p{6cm}|}
+\hline
+\textbf{Ventajas} & \textbf{Desventajas} \\ \hline
+Permite ejecutar tareas simultáneamente. & La programación puede ser compleja. \\ \hline
+Reduce tiempos de procesamiento. & La depuración de errores es más difícil. \\ \hline
+Funciona en sistemas distribuidos. & Puede existir sobrecarga por comunicación. \\ \hline
+Aprovecha múltiples procesadores. & Requiere conocimientos avanzados de paralelismo. \\ \hline
+Es portable y escalable. & El rendimiento depende de la red y hardware utilizado. \\ \hline
+\end{tabular}
+\end{table}
+
+A pesar de las limitaciones mencionadas, MPI continúa siendo una herramienta fundamental en el área del cómputo paralelo debido a su eficiencia y versatilidad. Muchas aplicaciones de investigación científica y análisis de datos requieren tiempos de procesamiento reducidos, por lo que MPI representa una solución adecuada para distribuir la carga de trabajo y optimizar recursos. Además, el aprendizaje de esta tecnología contribuye al desarrollo de habilidades relacionadas con programación paralela y arquitectura de computadoras, aspectos importantes en áreas tecnológicas actuales \cite{ref3_frem,ref4_frem}.
+
+\subsection{Aplicaciones de MPI}
+
+MPI es utilizado en una gran variedad de áreas que requieren procesamiento intensivo de información y cálculos complejos. Dentro del ámbito científico, se emplea en simulaciones físicas, químicas y matemáticas donde es necesario procesar millones de operaciones en tiempos reducidos. También es ampliamente utilizado en investigaciones relacionadas con dinámica de fluidos, simulaciones climáticas, astronomía y modelado molecular. Gracias a la capacidad de distribuir tareas entre diferentes nodos, MPI permite resolver problemas que serían demasiado lentos o imposibles de ejecutar utilizando únicamente procesamiento secuencial \cite{ref4_frem,ref5_frem}.
+
+En el área de inteligencia artificial y análisis de datos, MPI también tiene aplicaciones relevantes debido a que muchos algoritmos modernos requieren paralelizar operaciones para acelerar el entrenamiento y procesamiento de grandes conjuntos de información. Asimismo, en sectores industriales y financieros se utiliza para optimizar simulaciones, análisis estadísticos y procesamiento de transacciones complejas. Otra aplicación importante se encuentra en la enseñanza académica del cómputo paralelo, donde MPI sirve como base para comprender conceptos relacionados con comunicación entre procesos, sincronización y distribución de tareas. Esto permite que los estudiantes desarrollen conocimientos prácticos sobre programación paralela y sistemas distribuidos mediante herramientas reales utilizadas en entornos profesionales \cite{ref7_frem,ref9_frem}.
