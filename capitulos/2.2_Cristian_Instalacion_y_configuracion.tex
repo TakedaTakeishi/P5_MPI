@@ -116,9 +116,9 @@ Detección de Topología & \texttt{libhwloc-dev} & Fundamental para identificar 
 Como se desprende de la Tabla \ref{tab:install_requirements}, la instalación de OpenMPI se integra en una cadena de herramientas de desarrollo interrelacionadas. El cumplimiento de estos requisitos evita errores comunes durante la fase de enlazado y garantiza que las funcionalidades de detección de hardware estén plenamente operativas \cite{ref12_cristian_Ubuntu_Packages}. Una vez verificadas estas condiciones, se procede a la instalación modular de OpenMPI dividida en sus tres pilares fundamentales.
 \subsection{Instalación de Utilidades Ejecutables: openmpi-bin}
 El paquete \texttt{openmpi-bin} constituye el núcleo operativo para el usuario final, proporcionando los archivos ejecutables necesarios para la gestión del ciclo de vida de las aplicaciones paralelas. Entre las herramientas incluidas destacan \texttt{mpirun} y \texttt{mpiexec}, así como la utilidad \texttt{ompi\_info}, que permite inspeccionar la configuración detallada de los componentes MCA instalados \cite{ref11_cristian_OpenMPI_FAQ, ref12_cristian_Ubuntu_Packages}. La instalación de este paquete también despliega los daemons de soporte necesarios para la comunicación entre nodos, asegurando que el entorno de ejecución ORTE esté disponible para orquestar la computación de alto rendimiento \cite{ref7_cristian_Squyres2004, ref4_cristian_Graham2005}.
-El comando para llevar a cabo esta acción en sistemas basados en Debian es \texttt{sudo apt install openmpi-bin}. Tras su ejecución, el sistema descarga los binarios compilados y configura automáticamente los enlaces simbólicos en directorios estándar como \texttt{/usr/bin/}, permitiendo que los comandos sean accesibles desde cualquier terminal sin ajustes manuales adicionales \cite{ref13_cristian_Hokiegeek2024}. En la Figura \ref{fig:captura-openmpi-bin} se evidencia la salida esperada tras la instalación exitosa de este componente crítico.
+El comando para llevar a cabo esta acción en sistemas basados en Debian es \texttt{sudo apt install openmpi-bin}. Tras su ejecución, el sistema descarga los binarios compilados y configura automáticamente los enlaces simbólicos en directorios estándar como \texttt{/usr/bin/}, permitiendo que los comandos sean accesibles desde cualquier terminal sin ajustes manuales adicionales \cite{ref13_cristian_Hokiegeek2024}. 
+En la Figura \ref{fig:captura-completed-openmpi-bin} se muestra la ejecución del comando de instalación, donde se evidencia el error de localización del paquete al no estar disponible en las versiones modernas de Ubuntu.
 % ==================================================
-%
 % Insertar aquí captura de pantalla que muestre:
 % - Comando ejecutado: apt install openmpi-bin
 % - Salida del terminal sin errores
@@ -127,12 +127,19 @@ El comando para llevar a cabo esta acción en sistemas basados en Debian es \tex
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\textwidth]{imagenes/Cristian/cristian2_openmpi-bin3.png}
-    \caption{Evidencia de la ejecución exitosa del comando de instalación para el paquete openmpi-bin en una terminal de Ubuntu. Fuente: Elaboración propia.}
+    \includegraphics[width=0.8\textwidth]{imagenes/Cristian/cristian2_openmpi-bin1.png}
+    \caption{Ejecución del comando de instalación para el paquete openmpi-bin. Fuente: Elaboración propia.}
     \label{fig:captura-openmpi-bin}
 \end{figure}
 
-Al analizar la captura de pantalla de la Figura \ref{fig:captura-openmpi-bin}, se observa que el gestor de paquetes también instala componentes auxiliares como \texttt{openmpi-common}, que alberga los archivos de configuración globales necesarios para el comportamiento coherente de la biblioteca \cite{ref12_cristian_Ubuntu_Packages}. Esta etapa es fundamental, ya que sin los binarios de ejecución es imposible validar el funcionamiento de cualquier programa paralelo. Una vez finalizada esta fase, el usuario puede ejecutar \texttt{mpirun --version} para confirmar que el runtime está activo y reporta la versión correcta de OpenMPI \cite{ref11_cristian_OpenMPI_FAQ}.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{imagenes/Cristian/cristian2_openmpi-bin3.png}
+    \caption{Evidencia de la ejecución exitosa del comando de instalación para el paquete openmpi-bin en una terminal de Ubuntu. Fuente: Elaboración propia.}
+    \label{fig:captura-completed-openmpi-bin}
+\end{figure}
+
+Al analizar la captura de pantalla de la Figura \ref{fig:captura-completed-openmpi-bin}, se observa que el gestor de paquetes también instala componentes auxiliares como \texttt{openmpi-common}, que alberga los archivos de configuración globales necesarios para el comportamiento coherente de la biblioteca \cite{ref12_cristian_Ubuntu_Packages}. Esta etapa es fundamental, ya que sin los binarios de ejecución es imposible validar el funcionamiento de cualquier programa paralelo. Una vez finalizada esta fase, el usuario puede ejecutar \texttt{mpirun --version} para confirmar que el runtime está activo y reporta la versión correcta de OpenMPI \cite{ref11_cristian_OpenMPI_FAQ}.
 
 \subsection{Instalación de Símbolos de Depuración: openmpi-dbg}
 
@@ -162,21 +169,31 @@ Como se puede apreciar en la Figura \ref{fig:captura-openmpi-dbg}, el proceso de
 
 \subsection{Instalación de Cabeceras y Bibliotecas de Desarrollo: libopenmpi-dev}
 Para que un programador pueda construir aplicaciones utilizando el estándar MPI, es estrictamente necesario contar con el paquete \texttt{libopenmpi-dev}, el cual alberga los archivos de cabecera (\texttt{.h}), las bibliotecas estáticas y los objetos compartidos. Sin este componente, el compilador no sería capaz de resolver las definiciones de funciones críticas como \texttt{MPI\_Init} o \texttt{MPI\_Send}, resultando en errores catastróficos durante la fase de enlazado \cite{ref11_cristian_OpenMPI_FAQ, ref12_cristian_Ubuntu_Packages}. Además de las cabeceras estándar de C, este paquete incluye los módulos necesarios para el soporte de Fortran y C++, así como archivos de configuración para herramientas de construcción automáticas \cite{ref12_cristian_Ubuntu_Packages}.
-El comando de instalación es \texttt{sudo apt install libopenmpi-dev}, y su ejecución completa el tríptico necesario para un entorno de programación funcional. Tras la instalación, los envoltorios \texttt{mpicc} y \texttt{mpicxx} quedan plenamente configurados para buscar automáticamente las dependencias en los directorios del sistema, eliminando la necesidad de gestionar manualmente flags de compilación complejos \cite{ref13_cristian_Hokiegeek2024, ref12_cristian_Ubuntu_Packages}. En la Figura \ref{fig:captura-libopenmpi-dev} se evidencia la conclusión del proceso de preparación del entorno de desarrollo paralelo.
+El comando de instalación es \texttt{sudo apt install libopenmpi-dev}, y su ejecución completa el tríptico necesario para un entorno de programación funcional. Tras la instalación, los envoltorios \texttt{mpicc} y \texttt{mpicxx} quedan plenamente configurados para buscar automáticamente las dependencias en los directorios del sistema, eliminando la necesidad de gestionar manualmente flags de compilación complejos \cite{ref13_cristian_Hokiegeek2024, ref12_cristian_Ubuntu_Packages}. 
+En la Figura \ref{fig:captura-libopenmpi-dev} se muestra la ejecución del comando de instalación, mientras que en la Figura \ref{fig:captura-completed-libopenmpi-dev} se puede apreciar la correcta finalización del proceso de instalación del paquete de desarrollo.
+
 % ==================================================
-%
 % Insertar aquí captura de pantalla que muestre:
 % - Comando ejecutado: apt install libopenmpi-dev
 % - Salida del terminal sin errores
 % - Confirmación de que se han instalado los paquetes correctamente
 % ==================================================
+
 \begin{figure}[H]
-\centering
-\includegraphics[width=0.8\textwidth]{imagenes/Cristian/cristian3_libopenmpi-dev2.png}
-\caption{Finalización de la instalación del paquete de desarrollo libopenmpi-dev indispensable para la creación de software paralelo. Fuente: Elaboración propia.}
-\label{fig:captura-libopenmpi-dev}
+    \centering
+    \includegraphics[width=0.8\textwidth]{imagenes/Cristian/cristian3_libopenmpi-dev1.png}
+    \caption{Ejecución del comando de instalación para el paquete libopenmpi-dev. Fuente: Elaboración propia.}
+    \label{fig:captura-libopenmpi-dev}
 \end{figure}
-El análisis de la Figura \ref{fig:captura-libopenmpi-dev} permite confirmar que el sistema dispone ahora de todas las herramientas necesarias para transformar el código fuente en ejecutables paralelos eficientes. Es importante destacar que la versión instalada de las bibliotecas de desarrollo debe coincidir con la versión del runtime presente en el sistema para evitar incompatibilidades binarias que podrían provocar fallos inesperados en tiempo de ejecución \cite{ref5_cristian_Graham2006, ref11_cristian_OpenMPI_FAQ}. Con la instalación de estos tres paquetes, el sistema Linux queda transformado en un nodo de cómputo de alto rendimiento capaz de participar en simulaciones distribuidas \cite{ref11_cristian_OpenMPI_FAQ}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{imagenes/Cristian/cristian3_libopenmpi-dev2.png}
+    \caption{Finalización de la instalación del paquete de desarrollo libopenmpi-dev indispensable para la creación de software paralelo. Fuente: Elaboración propia.}
+    \label{fig:captura-completed-libopenmpi-dev}
+\end{figure}
+
+El análisis de la Figura \ref{fig:captura-completed-libopenmpi-dev} permite confirmar que el sistema dispone ahora de todas las herramientas necesarias para transformar el código fuente en ejecutables paralelos eficientes. Es importante destacar que la versión instalada de las bibliotecas de desarrollo debe coincidir con la versión del runtime presente en el sistema para evitar incompatibilidades binarias que podrían provocar fallos inesperados en tiempo de ejecución \cite{ref5_cristian_Graham2006, ref11_cristian_OpenMPI_FAQ}. Con la instalación de estos tres paquetes, el sistema Linux queda transformado en un nodo de cómputo de alto rendimiento capaz de participar en simulaciones distribuidas \cite{ref11_cristian_OpenMPI_FAQ}.
 
 
 \section{Configuración Básica y Post-Instalación en Linux}
