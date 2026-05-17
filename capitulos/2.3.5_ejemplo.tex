@@ -1,0 +1,61 @@
+\subsection{Ejemplo ilustrativo de una aplicación paralela en C}
+
+La asimilación práctica de la biblioteca MPI se facilita significativamente mediante el análisis de un programa clásico de transmisión de mensajes, comúnmente denominado programa de saludos o \textit{greetings}. Este diseño de software elemental no solo permite verificar que la infraestructura de comunicación del clúster esté operando de manera correcta, sino que también introduce los fundamentos de la filosofía de paso de mensajes en sistemas distribuidos \cite{pacheco_2011}. A través de este modelo, el programador puede observar cómo un único código fuente es capaz de bifurcar su comportamiento lógico en tiempo de ejecución en función del identificador asignado a cada proceso independiente \cite{gropp_using_mpi_1999}.
+
+El núcleo de este ejemplo práctico radica en la implementación del paradigma SPMD (\textit{Single Program, Multiple Data}), donde múltiples instancias ejecutan las mismas instrucciones sobre conjuntos de datos locales. Aunque MPI cuenta con más de un centenar de funciones, este código utiliza únicamente el subconjunto mínimo de seis rutinas fundamentales (\texttt{MPI\_Init}, \texttt{MPI\_Finalize}, \texttt{MPI\_Comm\_size}, \texttt{MPI\_Comm\_rank}, \texttt{MPI\_Send} y \texttt{MPI\_Recv}), las cuales son suficientes para escribir programas paralelos completamente funcionales \cite{grama_intro_parallel_2003, gropp_using_mpi_1999}. En el listado estructurado del Bloque de Código~\ref{lst:codigo_mpi} se detalla la sintaxis completa en lenguaje C para llevar a cabo esta demostración fundamental.
+
+\begin{lstlisting}[language=C, caption={Programa de saludos distribuido en MPI C.}, label={lst:codigo_mpi}]
+#include <stdio.h>
+#include <string.h>
+#include <mpi.h>
+
+const int MAX_STRING = 100;
+
+int main(void) {
+    char greeting[MAX_STRING];
+    int comm_sz;
+    int my_rank;
+
+    MPI_Init(NULL, NULL);
+    MPI_Comm_size(MPI_COMM_WORLD, &comm_sz);
+    MPI_Comm_rank(MPI_COMM_WORLD, &my_rank);
+
+    if (my_rank != 0) {
+        sprintf(greeting, "Saludos desde el proceso %d de %d!", my_rank, comm_sz);
+        MPI_Send(greeting, strlen(greeting) + 1, MPI_CHAR, 0, 0, MPI_COMM_WORLD);
+    } else {
+        printf("Saludos desde el proceso %d de %d!\n", my_rank, comm_sz);
+        for (int q = 1; q < comm_sz; q++) {
+            MPI_Recv(greeting, MAX_STRING, MPI_CHAR, q, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+            printf("%s\n", greeting);
+        }
+    }
+
+    MPI_Finalize();
+    return 0;
+}
+\end{lstlisting}
+
+La estructura expuesta en el Bloque de Código~\ref{lst:codigo_mpi} revela el flujo de control dual que caracteriza a las aplicaciones distribuidas controladas por rangos numéricos. Mientras que los procesos con un rango superior a cero empaquetan y transmiten una cadena de caracteres hacia el nodo central, el proceso con rango cero se configura en un estado de escucha activa para recopilar y desplegar secuencialmente la información en la consola de salida estándar \cite{pacheco_2011}. El bloque condicional (\texttt{if... else}) demuestra a la perfección el modelo de ejecución SPMD, donde un único código fuente genera comportamientos distintos basándose en el identificador o rango (\texttt{my\_rank}) de cada proceso \cite{pacheco_2011}. Además, expone de manera clara el concepto de memoria distribuida: la variable \texttt{greeting} existe de forma privada e independiente en la memoria de cada proceso, por lo que la única manera de compartir su contenido con el proceso maestro es a través de la red usando un envío explícito \cite{pacheco_2011}.
+
+Para comprender a fondo el rol de cada una de las subrutinas invocadas en el programa, en el Cuadro~\ref{tab:funciones_ejemplo} se detalla la semántica de las funciones esenciales de MPI utilizadas en la construcción de este binario.
+
+\begin{table}[h]
+\centering
+\caption{Funciones fundamentales de la API de MPI utilizadas en el ejemplo.}
+\label{tab:funciones_ejemplo}
+\begin{tabular}{|l|p{9.5cm}|}
+\hline
+\textbf{Función MPI} & \textbf{Propósito y descripción operativa} \\ \hline
+\texttt{MPI\_Init} & Inicializa el entorno de ejecución de MPI y establece los contextos de comunicación iniciales. \\ \hline
+\texttt{MPI\_Comm\_size} & Extrae el número total de procesos activos asociados al comunicador global especificado. \\ \hline
+\texttt{MPI\_Comm\_rank} & Obtiene el identificador entero único (rango) asignado al proceso que invoca la rutina. \\ \hline
+\texttt{MPI\_Send} & Envía un mensaje de forma síncrona bloqueante hacia un destino utilizando una etiqueta específica. \\ \hline
+\texttt{MPI\_Recv} & Recibe un flujo de datos desde un origen determinado, bloqueando el proceso hasta completar la operación. \\ \hline
+\texttt{MPI\_Finalize} & Libera los recursos asignados por la biblioteca MPI y concluye formalmente el entorno paralelo. \\ \hline
+\end{tabular}
+\end{table}
+
+La correcta ejecución de este ejemplo de saludos demuestra la capacidad de las primitivas de comunicación punto a punto para establecer orden y sincronía en sistemas de memoria distribuida. El acoplamiento exacto entre las llamadas a \texttt{MPI\_Send} ejecutadas por los trabajadores y el bucle iterativo de \texttt{MPI\_Recv} coordinado por el nodo maestro asegura que los mensajes transiten por el tejido de red sin pérdidas ni colisiones de datos \cite{grama_intro_parallel_2003}. Este patrón de comunicación asimétrica constituye la base conceptual sobre la cual se cimientan algoritmos de descomposición de dominios más complejos en la computación científica actual \cite{mpi_forum_2025}.
+
+A pesar de la aparente simplicidad matemática de este programa, es imperativo tomar precauciones rigurosas para evitar condiciones de bloqueo mutuo o \textit{deadlocks} durante la fase de escalamiento en supercomputadoras. Si el desarrollador altera el orden de las llamadas lógicas o si el proceso receptor intenta leer datos desde un rango inexistente, la aplicación completa quedará congelada indefinidamente en la memoria del sistema, desperdiciando valiosos recursos de procesamiento \cite{gropp_using_mpi_1999}. Por lo tanto, el diseño meticuloso de la topología lógica de los datos y el uso correcto de las estructuras de control representan las mejores directrices para la ingeniería de software de alto rendimiento \cite{open_mpi_2026}. Este programa es, en definitiva, el ejemplo por excelencia porque ilustra el ciclo de vida completo de una aplicación de MPI, enmarcando las comunicaciones estrictamente entre los llamados de inicio y fin, y comprender este patrón básico de comunicación y ramificación es el paso indispensable antes de avanzar a operaciones colectivas o arquitecturas de topologías virtuales \cite{grama_intro_parallel_2003, gropp_using_mpi_1999}.

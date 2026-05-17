@@ -1,0 +1,50 @@
+\subsection{Explicación del comando \texttt{mpicc}}
+
+El comando \texttt{mpicc} se utiliza para compilar programas escritos en C que emplean la biblioteca MPI \cite{pacheco_2011}. A diferencia de un compilador nativo, \texttt{mpicc} opera como un \textit{wrapper} que invoca al compilador subyacente del sistema, agregando automáticamente las rutas de inclusión de cabeceras como \texttt{mpi.h} y especificando las bibliotecas de enlace requeridas por el estándar \cite{pacheco_2011, mpi_forum_2025}. Esta abstracción permite al desarrollador evitar la configuración manual de dependencias complejas, facilitando la portabilidad del código fuente entre distintos clústeres y supercomputadoras \cite{grama_intro_parallel_2003}.
+
+La sintaxis operativa de \texttt{mpicc} hereda la estructura convencional de los compiladores de C en sistemas tipo Unix, por lo que la invocación elemental consiste en indicar el comando, las banderas deseadas, los archivos fuente y el nombre del binario de salida mediante el modificador \texttt{-o} \cite{pacheco_2011}. Un caso típico de uso incluye las banderas de depuración y advertencias, como se muestra a continuación:
+
+\begin{verbatim}
+$ mpicc -g -Wall -o mpi_hello mpi_hello.c
+\end{verbatim}
+
+Como la mayoría de las opciones se transfieren directamente al compilador base subyacente (por ejemplo, \texttt{gcc}), el usuario puede combinar las banderas tradicionales de optimización o diagnóstico con la gestión automática de las bibliotecas de MPI \cite{pacheco_2011}. A fin de organizar las opciones más relevantes, en la Tabla~\ref{tab:mpicc_flags} se presentan los parámetros opcionales de compilación y diagnóstico más utilizados en el desarrollo de software paralelo.
+
+\begin{table}[h!]
+\centering
+\renewcommand{\arraystretch}{1.5}
+\caption{Parámetros opcionales comúnmente utilizados con \texttt{mpicc}.}
+\label{tab:mpicc_flags}
+\begin{tabular}{|l|p{11cm}|}
+\hline
+\textbf{Parámetro} & \textbf{Descripción y propósito} \\
+\hline
+\texttt{-g} & Genera información adicional de depuración en el ejecutable, permitiendo el análisis del programa con herramientas como GDB \cite{pacheco_2011}. \\
+\hline
+\texttt{-Wall} & Activa la emisión de advertencias detalladas sobre posibles inconsistencias en el código fuente \cite{pacheco_2011}. \\
+\hline
+\texttt{-o <outfile>} & Especifica el nombre del archivo ejecutable resultante \cite{pacheco_2011}. \\
+\hline
+\texttt{-O2} & Solicita la optimización del código generado, siendo la opción recomendada para pruebas de rendimiento \cite{pacheco_2011}. \\
+\hline
+\texttt{-O0} & Desactiva toda optimización del compilador, útil para asegurar que el código no sea alterado durante la depuración \cite{pacheco_2011}. \\
+\hline
+\texttt{-showme} & (Open MPI) Muestra el comando completo de compilación con rutas de inclusión y enlace sin ejecutarlo \cite{open_mpi_2026}. \\
+\hline
+\texttt{-compile-info} & (MPICH) Exhibe exclusivamente las banderas y rutas de preprocesamiento del compilador base. \\
+\hline
+\texttt{-link-info} & (MPICH) Muestra las banderas de enlace y las bibliotecas dinámicas aplicadas al binario. \\
+\hline
+\end{tabular}
+\end{table}
+
+
+El uso de los parámetros descriptivos como \texttt{-showme}, \texttt{-compile-info} y \texttt{-link-info} resulta de crucial importancia cuando se requiere auditar las rutas exactas del sistema de archivos asignadas por la instalación de MPI \cite{open_mpi_2026}. Estas banderas revelan el comando real subyacente que se ejecutará, facilitando la extracción de las rutas necesarias para la configuración de \textit{Makefiles} u otras herramientas de construcción automatizada \cite{gropp_using_mpi_1999}. Asimismo, la inclusión de la bandera \texttt{-g} asegura que los metadatos de depuración no se pierdan durante la compilación, permitiendo el análisis del binario mediante depuradores paralelos comerciales o de código abierto.
+
+El uso correcto de \texttt{mpicc} demanda una atención rigurosa respecto al aprovisionamiento del entorno del sistema y la coherencia de las variables globales de la terminal\footnote{Por \comillas{aprovisionamiento} se entiende preparar y configurar el entorno necesario antes de compilar: instalar o cargar la implementación de MPI (p. ej. Open MPI o MPICH), activar los módulos del clúster cuando proceda (p. ej. mediante \texttt{module load}), asegurarse de que las rutas binarias estén en \texttt{PATH} y que las librerías compartidas sean localizables mediante \texttt{LD\_LIBRARY\_PATH}/\texttt{LIBRARY\_PATH}; además de verificar que los directorios de inclusión contienen \texttt{mpi.h} y otras cabeceras requeridas \cite{pacheco_2011,open_mpi_2026}.}. Uno de los fallos más recurrentes al invocar este comando se manifiesta mediante el error de sistema operativo que indica que el comando no ha sido encontrado, lo cual generalmente denota una ausencia de carga de los módulos de entorno del clúster o una incorrecta adición de las rutas binarias en la variable de entorno \texttt{\$PATH} \cite{pacheco_2011}. La resolución de este problema técnico implica comúnmente el uso de gestores de entorno como \texttt{environment-modules} para asegurar que las dependencias requeridas se encuentren activas en la sesión de terminal actual.
+
+Además de la correcta invocación sintáctica, la utilización de \texttt{mpicc} exige atención rigurosa frente a errores comunes del proceso de construcción. En primer lugar, dado que el \textit{wrapper} está diseñado para simplificar la invocación del compilador subyacente, intentar compilar un programa de MPI usando directamente el compilador base (como \texttt{gcc}) sin replicar manualmente los argumentos de inclusión y enlace resultará en errores de resolución de dependencias, como la incapacidad de encontrar \texttt{mpi.h} o referencias indefinidas a las funciones de MPI \cite{pacheco_2011, open_mpi_2026}. Por otro lado, es necesario evitar estrictamente el uso de opciones del compilador que alteren el tamaño o la disposición en memoria de los tipos de datos de C o que modifiquen las convenciones de llamada, ya que esto rompería la compatibilidad binaria (ABI) y podría generar fallos críticos en tiempo de ejecución \cite{mpi_forum_2025}.
+
+Otra consideración crítica surge durante la fase de enlazado, pues los enlazadores en sistemas Unix operan tradicionalmente en una sola pasada \cite{gropp_using_mpi_1999}. Esto implica que el orden en el que se pasan las bibliotecas adicionales es vital; por ejemplo, si se integran bibliotecas de \textit{profiling} que interceptan funciones de MPI mediante la interfaz \texttt{PMPI}, la biblioteca del \textit{profiler} debe enlazarse antes que las bibliotecas estándar (por ejemplo, \texttt{-lmyprof -lpmpi -lmpi}) \cite{gropp_using_mpi_1999}. Si se listan en el orden incorrecto, el programa compilará sin errores aparentes, pero fallará silenciosamente en su tarea de perfilar la aplicación \cite{gropp_using_mpi_1999}.
+
+Finalmente, resulta prioritario evitar la colisión semántica derivada de mezclar extensiones de código fuente o emplear implementaciones de bibliotecas divergentes durante la construcción del proyecto. Intentar compilar código escrito en C++ utilizando \texttt{mpicc} en lugar de su contraparte específica \texttt{mpicxx} provocará fallas críticas de compilación debido a la incapacidad del compilador base para resolver el tipado y las clases del estándar moderno \cite{open_mpi_2026}. De igual modo, la mezcla accidental de archivos objeto generados por implementaciones distintas del estándar, como Open MPI y MPICH, causará fallos de enlazado indeterminados, por lo que se recomienda realizar una limpieza absoluta de los binarios previos antes de cambiar de entorno de ejecución \cite{mpi_forum_2025}. En aplicaciones heterogéneas que combinan módulos compilados con \texttt{mpicc} para C y con \texttt{mpif90} para Fortran, es necesario configurar opciones especiales durante la compilación y el enlazado para garantizar que la inicialización de MPI levante correctamente los entornos de cada lenguaje; de lo contrario, la aplicación puede omitir cargar el soporte para uno de los lenguajes si la biblioteca de ejecución correspondiente no se enlazó adecuadamente \cite{mpi_forum_2025}.
