@@ -13,7 +13,34 @@ Este capítulo presenta las reflexiones finales centradas en la práctica de pro
 \newpage
 \section{Conclusión de Delgado Lucero Cristian Isaac}
 
+Esta práctica me ayudó a reafirmar cómo Linux sirve como base para ejecutar entornos de cómputo paralelo, especialmente al instalar los paquetes 
+openmpi-bin y libopenmpi-dev. Sin embargo, durante la instalación me encontré con un detalle importante: en mi versión de Ubuntu 24.04 (Noble Numbat), 
+el paquete openmpi-dbg ya no está disponible de forma directa porque los símbolos de depuración ahora se manejan con un sistema llamado dbgsym en 
+repositorios aparte. Esto me permitió notar que las distribuciones de Linux cambian con el tiempo y que es necesario estar al tanto de estas 
+actualizaciones para no atorarse al seguir guías que ya son algo viejas. A pesar de ese inconveniente, pude instalar los otros componentes sin 
+problema y revisar cómo funciona la arquitectura modular (MCA) de OpenMPI, la cual ayuda a que el sistema elija automáticamente el mejor protocolo 
+de red según el hardware que encuentre, ya sea usando TCP o memoria compartida para que la comunicación sea más rápida.
 
+Al ejecutar el modelo SPMD con ocho procesos, logré entender mejor conceptos como el rango y el comunicador, que antes solo había visto explicados en 
+el pizarrón durante la clase. El hecho de ver que el proceso con rango cero actúa como un maestro repartiendo el trabajo, mientras que los otros siete 
+procesos funcionan como trabajadores para el procesamiento pesado, me ayudó a ver por qué el paso de mensajes puede ser mucho más ordenado que usar 
+memoria compartida en muchos casos. También tuve que configurar variables de entorno como PATH y LD\_LIBRARY\_PATH, además de las llaves SSH para que 
+los nodos del clúster se comuniquen sin estar pidiendo la contraseña a cada rato, lo cual mejoró mi entendimiento sobre cómo se conectan las capas 
+de red con el espacio de usuario del sistema operativo. Aprender que cada MPI\_Send necesita obligatoriamente su correspondiente MPI\_Recv me dejó claro 
+que la sincronización es la clave para evitar que los datos se pierdan o se desordenen al viajar entre procesos.
+
+Por otro lado, el hecho de toparme con el error del paquete openmpi-dbg no fue solo un obstáculo, sino una oportunidad para aprender algo que no viene en los manuales básicos. Me di cuenta de que en la práctica real las cosas rara vez salen como en los tutoriales, y que saber buscar soluciones, leer la documentación y adaptarse al entorno es tan importante como conocer la teoría del paso de mensajes. Revisar los repositorios con apt search, entender el aviso de que apt-key está obsoleto y descubrir cómo funcionan los paquetes dbgsym en versiones recientes de Ubuntu me obligó a dejar de seguir instrucciones de forma mecánica y empezar a pensar por mi cuenta. Esa parte, aunque frustrante al principio, fue la que más me enseñó sobre cómo se organiza realmente el ecosistema de software en Linux y por qué a veces los comandos que funcionaban hace un par de años ya no sirven igual hoy. Al final, resolver ese tipo de detalles me dio más confianza para enfrentarme a entornos de desarrollo reales, donde casi siempre algo sale diferente a lo esperado.
+
+En general, esta práctica no solo me ayudó a aprender el uso de compiladores envoltorios como mpicc, sino que me permitió observar cómo el kernel de 
+Linux se coordina con las bibliotecas para aprovechar realmente los núcleos del procesador. El trabajo de investigar por mi cuenta y documentar cada 
+paso me permitió ver la materia de una forma mucho más aplicada, entendiendo que el cómputo paralelo no es solo un montón de teoría, sino una 
+herramienta real para resolver problemas de ingeniería que son demasiado grandes para una sola computadora. Esta experiencia me deja un poco más
+ preparado para enfrentar proyectos de mayor escala en el futuro, apreciando la flexibilidad que herramientas de este tipo ofrecen para el desarrollo 
+ científico y el procesamiento distribuido de datos. 
+%Considero que haber solucionado los problemas de compatibilidad de mi distribución mejoró mi 
+%capacidad de diagnóstico en sistemas operativos, lo cual es muy útil para cualquier proyecto de software que requiera un entorno de ejecución bien
+%configurado y eficiente.
+ 
 \newpage
 \section{Conclusión de Frem Cortés José Angel}
 % Escribir conclusion individual.
