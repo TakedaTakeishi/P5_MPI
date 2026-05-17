@@ -20,6 +20,8 @@
 %           Se detalla el diseño del código fuente, las funciones MPI
 %           utilizadas y la evidencia de ejecución en el cluster."
 
+En este capítulo se presenta el desarrollo integral del sistema de procesamiento paralelo basado en la interfaz de paso de mensajes (MPI). Se detallará la lógica implementada en el código fuente escrito en el lenguaje C, se explicarán minuciosamente las funciones de MPI seleccionadas para la coordinación de tareas y, finalmente, se mostrará la evidencia gráfica de la ejecución del programa, garantizando que el flujo de datos opere correctamente bajo un esquema concurrente \cite{ref2_frem}.
+
 \section{Desarrollo del Sistema}
 
 % ==========================================
@@ -44,6 +46,22 @@
 %    - Si lo deseas, podrías incluir un diagrama simple del flujo de comunicación entre procesos.
 %    - Quizás guardes la imagen en imagenes/ e la insertes con \includegraphics.
 % ==========================================
+
+Para dar solución al requerimiento de procesamiento de datos, el problema central consistió en procesar múltiples operaciones aritméticas de forma concurrente, cada una dependiente de un conjunto específico de valores flotantes (a, b y c). En lugar de calcular cada operación de manera secuencial, lo cual subutiliza los recursos de hardware, resulta mucho más adecuado abordar este problema empleando MPI. Esta tecnología permite instanciar múltiples procesos de trabajo independientes que pueden ejecutar sus cálculos matemáticos al mismo tiempo, lo que acelera significativamente la obtención de resultados globales.
+
+La estrategia de paralelización adoptada fue un esquema de maestro-esclavo mediante la división de tareas \cite{ref4_frem}. Para este fin, se emplearon exactamente ocho procesos, ya que la carga de trabajo estipula la evaluación de siete operaciones distintas (siete esclavos), requiriendo un proceso adicional que actúe como nodo principal (un maestro). Las responsabilidades se dividieron de la siguiente forma:
+
+\begin{itemize}
+    \item \textbf{Proceso 0 (Maestro):} Contiene la matriz de datos completa, los distribuye uno a uno a los demás nodos, y recolecta los resultados para imprimirlos ordenadamente.
+    \item \textbf{Procesos 1 al 7 (Esclavos):} Cada uno recibe una fila de datos, ejecuta una fórmula matemática única con dichos valores, y retorna el resultado al maestro.
+\end{itemize}
+
+Durante el desarrollo del sistema se emplearon diversas funciones clave de MPI, cuyo uso fue fundamental:
+\begin{itemize}
+    \item \texttt{MPI\_Init}: Utilizada para inicializar el entorno de ejecución paralelo antes de cualquier operación de red.
+    \item \texttt{MPI\_Comm\_rank} y \texttt{MPI\_Comm\_size}: Empleadas para obtener el identificador único (\textit{rank}) de cada proceso y validar que existan exactamente ocho nodos.
+    \item \texttt{MPI\_Send} y \texttt{MPI\_Recv}: Funciones punto a punto utilizadas para que el maestro envíe los arreglos numéricos y un token de sincronización, y a su vez, reciba el cálculo procesado por los esclavos de forma segura \cite{ref7_frem}.
+\end{itemize}
 
 % TIP: Si tu práctica tiene varios ejercicios, podrías crear una subsección para cada uno:
 %      \subsection{Ejercicio 1: Suma de vectores}
@@ -86,6 +104,46 @@
 % TIP: La plantilla ya incluye el paquete `listings` configurado.
 %      Si necesitas resaltar sintaxis de C/C++, usa:
 %      \begin{lstlisting}[language=C++, caption=Titulo del codigo]
+
+El núcleo algorítmico del proyecto se apoya en un control estricto de la comunicación. A continuación, se explican paso a paso los fragmentos más relevantes.
+
+En primera instancia, el archivo de configuración \texttt{Makefile} establece las reglas para la compilación del proyecto utilizando el compilador \texttt{mpicc}, garantizando un nivel alto de revisión mediante las banderas \texttt{-Wall} y \texttt{-Wextra}. La inclusión de este archivo automatiza la creación del ejecutable y la invocación de las pruebas.
+
+En la Figura \ref{fig:codigo_makefile} se muestra la visualización completa del archivo \texttt{Makefile}.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.8\textwidth]{imagenes/Hako/codigo_makefile.png}
+\caption{Archivo de configuración Makefile. Fuente: Elaboración propia.}
+\label{fig:codigo_makefile}
+\end{figure}
+
+Por otra parte, dentro del archivo principal escrito en lenguaje C, la inicialización asegura que el programa se abortará de manera limpia si no se proporcionan los ocho procesos requeridos, lo cual previene violaciones de segmento o bloqueos indefinidos. 
+
+El algoritmo se complementa con un pase de tokens (\textit{permiso}) desde el nodo maestro hacia cada esclavo. Este enfoque asegura que los mensajes impresos en la consola aparezcan de forma secuencial, evitando que la salida estándar de los procesos colisione.
+
+En la Figura \ref{fig:codigo_main_1}, \ref{fig:codigo_main_2} y \ref{fig:codigo_main_3} se muestra el fragmento de código principal donde el nodo maestro itera sobre la matriz enviando los datos y recibiendo los cálculos resultantes.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.6\textwidth]{imagenes/Hako/codigo_main_1.png}
+\caption{Primer fragmento de código del archivo principal del sistema. Fuente: Elaboración propia.}
+\label{fig:codigo_main_1}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.7\textwidth]{imagenes/Hako/codigo_main_2.png}
+\caption{Segundo fragmento de código del archivo principal del sistema. Fuente: Elaboración propia.}
+\label{fig:codigo_main_2}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.8\textwidth]{imagenes/Hako/codigo_main_3.png}
+\caption{Tercer fragmento de código del archivo principal del sistema. Fuente: Elaboración propia.}
+\label{fig:codigo_main_3}
+\end{figure}
 
 \section{Evidencia de Ejecución}
 
@@ -132,3 +190,38 @@
 %
 %      Se sugiere verificar que la imagen exista en la carpeta imagenes/.
 
+Las pruebas del aplicativo se llevaron a cabo utilizando el subcomando \texttt{make run}, el cual despliega la instrucción \texttt{mpirun --mca btl \^{}tcp -np 8 ./main}. Esta configuración de lanzamiento permitió instanciar el ecosistema paralelo de manera local.
+
+Como se puede apreciar en la evidencia visual, el uso de funciones de sincronización aseguró que cada uno de los nodos imprimiera su información de recepción de datos y cálculo en el tiempo adecuado, logrando una consola limpia y comprensible.
+
+En la Figura \ref{fig:salida_mpi} se expone la consola de comandos resultante. El nodo cero (maestro) emite los mensajes de distribución y posteriormente, por turnos, los nodos del uno al siete exhiben la operación realizada junto con la impresión del tiempo actual proporcionado por la herramienta de \texttt{MPI\_Wtime} \cite{ref1_frem}.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.9\textwidth]{imagenes/Hako/salida_mpi.png}
+\caption{Resultados obtenidos tras la ejecución del programa con MPI. Fuente: Elaboración propia.}
+\label{fig:salida_mpi}
+\end{figure}
+
+Para contrastar el éxito de las pruebas de forma tabular, el Cuadro \ref{tab:operaciones} exhibe los tiempos de consistencia y los datos evaluados. Se observa que la paralelización procesa la información eficientemente y entrega resultados matemáticamente correctos para todas las operaciones asignadas.
+
+\begin{table}[htbp]
+\centering
+\caption{Asignación de operaciones y resultados por proceso. Fuente: Elaboración propia.}
+\label{tab:operaciones}
+\begin{tabular}{|c|c|c|c|}
+\hline
+\textbf{Nodo} & \textbf{Valores (a, b, c)} & \textbf{Operación Matemática} & \textbf{Resultado Final} \\
+\hline
+1 & 1.0, 2.0, 3.0 & $a + b + c$ & 6.00 \\
+2 & 4.0, 5.0, 6.0 & $a - b + c$ & 5.00 \\
+3 & 7.0, 8.0, 9.0 & $a * b * c$ & 504.00 \\
+4 & 9.0, 6.0, 3.0 & $a * (b + c)$ & 81.00 \\
+5 & -6.0, -9.0, -12.0 & $a * b - b * c$ & -54.00 \\
+6 & 5.0, 10.0, 15.0 & $c * (a + b)^2$ & 3375.00 \\
+7 & 7.0, 14.0, 21.0 & $a^2 - b^2 + c^3$ & 9114.00 \\
+\hline
+\end{tabular}
+\end{table}
+
+A través del análisis de estos resultados, se valida rotundamente la efectividad de la técnica de paralelización con memoria distribuida en el contexto de la práctica.
