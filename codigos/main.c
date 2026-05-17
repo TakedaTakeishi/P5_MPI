@@ -225,6 +225,7 @@ int main(int argc, char **argv) {
 
     MPI_Send(&resultado, 1, MPI_DOUBLE, 0, 200, MPI_COMM_WORLD);
   }
+
   MPI_Finalize();
   return 0;
 }
