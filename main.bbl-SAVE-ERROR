@@ -49,6 +49,7 @@
       \strng{authorbibnamehash}{92334d64bab461a65832bd360bea3e44}
       \strng{authornamehash}{92334d64bab461a65832bd360bea3e44}
       \strng{authorfullhash}{92334d64bab461a65832bd360bea3e44}
+      \field{extraname}{1}
       \field{sortinit}{3}
       \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
       \field{labelnamesource}{author}
@@ -267,6 +268,417 @@
       \field{note}{Universidad Politécnica de Madrid. Consultado el 2026-05-14}
       \field{title}{Programación paralela basada en paso de mensajes (MPI)}
       \field{year}{2017}
+    \endentry
+    \entry{ref3_cristian_Walker1992}{report}{}
+      \name{author}{1}{}{%
+        {{hash=76bd1e4a628833021f0a7a0f060a0cb0}{%
+           family={Walker},
+           familyi={W\bibinitperiod},
+           given={D.\bibnamedelimi W.},
+           giveni={D\bibinitperiod\bibinitdelim W\bibinitperiod}}}%
+      }
+      \list{institution}{1}{%
+        {Oak Ridge National Lab}%
+      }
+      \strng{namehash}{76bd1e4a628833021f0a7a0f060a0cb0}
+      \strng{fullhash}{76bd1e4a628833021f0a7a0f060a0cb0}
+      \strng{bibnamehash}{76bd1e4a628833021f0a7a0f060a0cb0}
+      \strng{authorbibnamehash}{76bd1e4a628833021f0a7a0f060a0cb0}
+      \strng{authornamehash}{76bd1e4a628833021f0a7a0f060a0cb0}
+      \strng{authorfullhash}{76bd1e4a628833021f0a7a0f060a0cb0}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Standards for message-passing in a distributed memory environment}
+      \field{type}{techreport}
+      \field{year}{1992}
+    \endentry
+    \entry{ref8_cristian_Nielsen2016}{book}{}
+      \name{author}{1}{}{%
+        {{hash=5f4835e5e7d92d356ad8b5e7016dec6e}{%
+           family={Nielsen},
+           familyi={N\bibinitperiod},
+           given={Frank},
+           giveni={F\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Springer}%
+      }
+      \strng{namehash}{5f4835e5e7d92d356ad8b5e7016dec6e}
+      \strng{fullhash}{5f4835e5e7d92d356ad8b5e7016dec6e}
+      \strng{bibnamehash}{5f4835e5e7d92d356ad8b5e7016dec6e}
+      \strng{authorbibnamehash}{5f4835e5e7d92d356ad8b5e7016dec6e}
+      \strng{authornamehash}{5f4835e5e7d92d356ad8b5e7016dec6e}
+      \strng{authorfullhash}{5f4835e5e7d92d356ad8b5e7016dec6e}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Introduction to HPC with MPI for Data Science}
+      \field{year}{2016}
+    \endentry
+    \entry{ref2_cristian_MPIStandard10}{manual}{}
+      \name{author}{1}{}{%
+        {{hash=2f3031a081611328d0bf25e14ffc1dd1}{%
+           family={{Message Passing Interface Forum}},
+           familyi={M\bibinitperiod}}}%
+      }
+      \strng{namehash}{2f3031a081611328d0bf25e14ffc1dd1}
+      \strng{fullhash}{2f3031a081611328d0bf25e14ffc1dd1}
+      \strng{bibnamehash}{2f3031a081611328d0bf25e14ffc1dd1}
+      \strng{authorbibnamehash}{2f3031a081611328d0bf25e14ffc1dd1}
+      \strng{authornamehash}{2f3031a081611328d0bf25e14ffc1dd1}
+      \strng{authorfullhash}{2f3031a081611328d0bf25e14ffc1dd1}
+      \field{extraname}{1}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{month}{6}
+      \field{title}{MPI: A Message-Passing Interface Standard. Version 1.0}
+      \field{year}{1994}
+    \endentry
+    \entry{ref4_cristian_Graham2005}{article}{}
+      \name{author}{3}{}{%
+        {{hash=82868314735205002a19d7b38afbbf7a}{%
+           family={Graham},
+           familyi={G\bibinitperiod},
+           given={Richard\bibnamedelima L.},
+           giveni={R\bibinitperiod\bibinitdelim L\bibinitperiod}}}%
+        {{hash=751a4cc89b396ec3e533945a04895115}{%
+           family={Woodall},
+           familyi={W\bibinitperiod},
+           given={Timothy\bibnamedelima S.},
+           giveni={T\bibinitperiod\bibinitdelim S\bibinitperiod}}}%
+        {{hash=d77f038f95ebcc193320eee12be9ef41}{%
+           family={Squyres},
+           familyi={S\bibinitperiod},
+           given={Jeffrey\bibnamedelima M.},
+           giveni={J\bibinitperiod\bibinitdelim M\bibinitperiod}}}%
+      }
+      \strng{namehash}{2d8b1852eb1cc0ce9e054b1ffdf53328}
+      \strng{fullhash}{2d8b1852eb1cc0ce9e054b1ffdf53328}
+      \strng{bibnamehash}{2d8b1852eb1cc0ce9e054b1ffdf53328}
+      \strng{authorbibnamehash}{2d8b1852eb1cc0ce9e054b1ffdf53328}
+      \strng{authornamehash}{2d8b1852eb1cc0ce9e054b1ffdf53328}
+      \strng{authorfullhash}{2d8b1852eb1cc0ce9e054b1ffdf53328}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Lecture Notes in Computer Science}
+      \field{title}{Open MPI: A Flexible High Performance MPI}
+      \field{year}{2005}
+      \field{pages}{228\bibrangedash 239}
+      \range{pages}{12}
+    \endentry
+    \entry{ref5_cristian_Graham2006}{article}{}
+      \name{author}{4}{}{%
+        {{hash=82868314735205002a19d7b38afbbf7a}{%
+           family={Graham},
+           familyi={G\bibinitperiod},
+           given={Richard\bibnamedelima L.},
+           giveni={R\bibinitperiod\bibinitdelim L\bibinitperiod}}}%
+        {{hash=6346e0c41e7b9feb7c33985d87ba1a0a}{%
+           family={Choi},
+           familyi={C\bibinitperiod},
+           given={Sung-Eun},
+           giveni={S\bibinithyphendelim E\bibinitperiod}}}%
+        {{hash=e0c7a55eaa6092d9bcccd29f05347b6b}{%
+           family={Daniel},
+           familyi={D\bibinitperiod},
+           given={David\bibnamedelima J.},
+           giveni={D\bibinitperiod\bibinitdelim J\bibinitperiod}}}%
+        {{hash=d104a233829758f145c2708ccc459b9c}{%
+           family={Sukalski},
+           familyi={S\bibinitperiod},
+           given={Mitchel\bibnamedelima W.},
+           giveni={M\bibinitperiod\bibinitdelim W\bibinitperiod}}}%
+      }
+      \strng{namehash}{e845a3f12c9921e629880abdb71f4a78}
+      \strng{fullhash}{6cf9ae33240810f3bb205fb0840b7d29}
+      \strng{bibnamehash}{6cf9ae33240810f3bb205fb0840b7d29}
+      \strng{authorbibnamehash}{6cf9ae33240810f3bb205fb0840b7d29}
+      \strng{authornamehash}{e845a3f12c9921e629880abdb71f4a78}
+      \strng{authorfullhash}{6cf9ae33240810f3bb205fb0840b7d29}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{International Journal of High Performance Computing Applications}
+      \field{title}{Open MPI: A Scalable Support for InfiniBand}
+      \field{year}{2006}
+    \endentry
+    \entry{ref6_cristian_Graham2007}{article}{}
+      \name{author}{3}{}{%
+        {{hash=82868314735205002a19d7b38afbbf7a}{%
+           family={Graham},
+           familyi={G\bibinitperiod},
+           given={Richard\bibnamedelima L.},
+           giveni={R\bibinitperiod\bibinitdelim L\bibinitperiod}}}%
+        {{hash=226a0f36f487f0d762d43a4958af4ddd}{%
+           family={Barrett},
+           familyi={B\bibinitperiod},
+           given={Brian\bibnamedelima W.},
+           giveni={B\bibinitperiod\bibinitdelim W\bibinitperiod}}}%
+        {{hash=19dc9d515baafa2cc282bcc9d84cb352}{%
+           family={Bosilca},
+           familyi={B\bibinitperiod},
+           given={George},
+           giveni={G\bibinitperiod}}}%
+      }
+      \strng{namehash}{050deef1293165e6bf5eff074c53f5d9}
+      \strng{fullhash}{050deef1293165e6bf5eff074c53f5d9}
+      \strng{bibnamehash}{050deef1293165e6bf5eff074c53f5d9}
+      \strng{authorbibnamehash}{050deef1293165e6bf5eff074c53f5d9}
+      \strng{authornamehash}{050deef1293165e6bf5eff074c53f5d9}
+      \strng{authorfullhash}{050deef1293165e6bf5eff074c53f5d9}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Parallel Processing Letters}
+      \field{number}{01}
+      \field{title}{Open MPI: A High Performance, Flexible Implementation of MPI Point-to-Point Communications}
+      \field{volume}{17}
+      \field{year}{2007}
+      \field{pages}{79\bibrangedash 88}
+      \range{pages}{10}
+    \endentry
+    \entry{ref1_cristian_MPIStandard41}{manual}{}
+      \name{author}{1}{}{%
+        {{hash=2f3031a081611328d0bf25e14ffc1dd1}{%
+           family={{Message Passing Interface Forum}},
+           familyi={M\bibinitperiod}}}%
+      }
+      \strng{namehash}{2f3031a081611328d0bf25e14ffc1dd1}
+      \strng{fullhash}{2f3031a081611328d0bf25e14ffc1dd1}
+      \strng{bibnamehash}{2f3031a081611328d0bf25e14ffc1dd1}
+      \strng{authorbibnamehash}{2f3031a081611328d0bf25e14ffc1dd1}
+      \strng{authornamehash}{2f3031a081611328d0bf25e14ffc1dd1}
+      \strng{authorfullhash}{2f3031a081611328d0bf25e14ffc1dd1}
+      \field{extraname}{2}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{month}{11}
+      \field{title}{MPI: A Message-Passing Interface Standard. Version 4.1}
+      \field{year}{2023}
+      \verb{urlraw}
+      \verb https://www.mpi-forum.org/docs/mpi-4.1/mpi41-report.pdf
+      \endverb
+      \verb{url}
+      \verb https://www.mpi-forum.org/docs/mpi-4.1/mpi41-report.pdf
+      \endverb
+    \endentry
+    \entry{ref9_cristian_Gropp1996}{book}{}
+      \name{author}{3}{}{%
+        {{hash=232270861ce704a354417bfda0acdb1b}{%
+           family={Gropp},
+           familyi={G\bibinitperiod},
+           given={William},
+           giveni={W\bibinitperiod}}}%
+        {{hash=ae2e171ea0c22f3a6e38ca0ffe481399}{%
+           family={Lusk},
+           familyi={L\bibinitperiod},
+           given={Ewing},
+           giveni={E\bibinitperiod}}}%
+        {{hash=9647a2df682f3a88f0f36dc0c58aa860}{%
+           family={Skjellum},
+           familyi={S\bibinitperiod},
+           given={Anthony},
+           giveni={A\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {MIT Press}%
+      }
+      \strng{namehash}{92334d64bab461a65832bd360bea3e44}
+      \strng{fullhash}{92334d64bab461a65832bd360bea3e44}
+      \strng{bibnamehash}{92334d64bab461a65832bd360bea3e44}
+      \strng{authorbibnamehash}{92334d64bab461a65832bd360bea3e44}
+      \strng{authornamehash}{92334d64bab461a65832bd360bea3e44}
+      \strng{authorfullhash}{92334d64bab461a65832bd360bea3e44}
+      \field{extraname}{2}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Using MPI: Portable Parallel Programming with the Message-Passing Interface}
+      \field{year}{1996}
+    \endentry
+    \entry{ref7_cristian_Squyres2004}{report}{}
+      \name{author}{2}{}{%
+        {{hash=d77f038f95ebcc193320eee12be9ef41}{%
+           family={Squyres},
+           familyi={S\bibinitperiod},
+           given={Jeffrey\bibnamedelima M.},
+           giveni={J\bibinitperiod\bibinitdelim M\bibinitperiod}}}%
+        {{hash=76782c3af2abd54f0f96f4565cbc818a}{%
+           family={Lumsdaine},
+           familyi={L\bibinitperiod},
+           given={Andrew},
+           giveni={A\bibinitperiod}}}%
+      }
+      \list{institution}{1}{%
+        {Indiana University}%
+      }
+      \strng{namehash}{6042581697f96376fe7e43f4642483d8}
+      \strng{fullhash}{6042581697f96376fe7e43f4642483d8}
+      \strng{bibnamehash}{6042581697f96376fe7e43f4642483d8}
+      \strng{authorbibnamehash}{6042581697f96376fe7e43f4642483d8}
+      \strng{authornamehash}{6042581697f96376fe7e43f4642483d8}
+      \strng{authorfullhash}{6042581697f96376fe7e43f4642483d8}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{A component architecture for the message passing of Open MPI}
+      \field{type}{techreport}
+      \field{year}{2004}
+    \endentry
+    \entry{ref15_cristian_CARC_MPI_Guide}{misc}{}
+      \name{author}{1}{}{%
+        {{hash=ae2793e74b43a9a2a27ea50c96be9a01}{%
+           family={{CARC USC}},
+           familyi={C\bibinitperiod}}}%
+      }
+      \strng{namehash}{ae2793e74b43a9a2a27ea50c96be9a01}
+      \strng{fullhash}{ae2793e74b43a9a2a27ea50c96be9a01}
+      \strng{bibnamehash}{ae2793e74b43a9a2a27ea50c96be9a01}
+      \strng{authorbibnamehash}{ae2793e74b43a9a2a27ea50c96be9a01}
+      \strng{authornamehash}{ae2793e74b43a9a2a27ea50c96be9a01}
+      \strng{authorfullhash}{ae2793e74b43a9a2a27ea50c96be9a01}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{MPI Implementation Guide: OpenMPI, MPICH, and Intel MPI}
+      \field{year}{2024}
+      \verb{urlraw}
+      \verb https://www.carc.usc.edu/user-guides/advanced-hpc-programming/mpi
+      \endverb
+      \verb{url}
+      \verb https://www.carc.usc.edu/user-guides/advanced-hpc-programming/mpi
+      \endverb
+    \endentry
+    \entry{ref11_cristian_OpenMPI_FAQ}{misc}{}
+      \name{author}{1}{}{%
+        {{hash=fd473b0f71e3f5a8f10e1325fc808c26}{%
+           family={{The Open MPI Community}},
+           familyi={T\bibinitperiod}}}%
+      }
+      \strng{namehash}{fd473b0f71e3f5a8f10e1325fc808c26}
+      \strng{fullhash}{fd473b0f71e3f5a8f10e1325fc808c26}
+      \strng{bibnamehash}{fd473b0f71e3f5a8f10e1325fc808c26}
+      \strng{authorbibnamehash}{fd473b0f71e3f5a8f10e1325fc808c26}
+      \strng{authornamehash}{fd473b0f71e3f5a8f10e1325fc808c26}
+      \strng{authorfullhash}{fd473b0f71e3f5a8f10e1325fc808c26}
+      \field{sortinit}{3}
+      \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Open MPI FAQ: Running MPI jobs and Tuning}
+      \field{year}{2024}
+      \verb{urlraw}
+      \verb https://www.open-mpi.org/faq/
+      \endverb
+      \verb{url}
+      \verb https://www.open-mpi.org/faq/
+      \endverb
+    \endentry
+    \entry{ref10_cristian_Ammendola2012}{misc}{}
+      \name{author}{1}{}{%
+        {{hash=573711ed5068ed8a596396c25a3c0123}{%
+           family={Ammendola},
+           familyi={A\bibinitperiod},
+           given={Roberto},
+           giveni={R\bibinitperiod}}}%
+      }
+      \strng{namehash}{573711ed5068ed8a596396c25a3c0123}
+      \strng{fullhash}{573711ed5068ed8a596396c25a3c0123}
+      \strng{bibnamehash}{573711ed5068ed8a596396c25a3c0123}
+      \strng{authorbibnamehash}{573711ed5068ed8a596396c25a3c0123}
+      \strng{authornamehash}{573711ed5068ed8a596396c25a3c0123}
+      \strng{authorfullhash}{573711ed5068ed8a596396c25a3c0123}
+      \field{sortinit}{4}
+      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{howpublished}{Technical Report, ResearchGate}
+      \field{title}{The OpenMPI structure based on frameworks and components}
+      \field{year}{2012}
+    \endentry
+    \entry{ref12_cristian_Ubuntu_Packages}{misc}{}
+      \name{author}{1}{}{%
+        {{hash=aacfea8cb27c1b8d0dd136a1aca2f0a4}{%
+           family={{Canonical Ltd.}},
+           familyi={C\bibinitperiod}}}%
+      }
+      \strng{namehash}{aacfea8cb27c1b8d0dd136a1aca2f0a4}
+      \strng{fullhash}{aacfea8cb27c1b8d0dd136a1aca2f0a4}
+      \strng{bibnamehash}{aacfea8cb27c1b8d0dd136a1aca2f0a4}
+      \strng{authorbibnamehash}{aacfea8cb27c1b8d0dd136a1aca2f0a4}
+      \strng{authornamehash}{aacfea8cb27c1b8d0dd136a1aca2f0a4}
+      \strng{authorfullhash}{aacfea8cb27c1b8d0dd136a1aca2f0a4}
+      \field{sortinit}{5}
+      \field{sortinithash}{20e9b4b0b173788c5dace24730f47d8c}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Package Details: libopenmpi-dev, openmpi-bin}
+      \field{year}{2024}
+      \verb{urlraw}
+      \verb https://packages.debian.org/sid/libopenmpi-dev
+      \endverb
+      \verb{url}
+      \verb https://packages.debian.org/sid/libopenmpi-dev
+      \endverb
+    \endentry
+    \entry{ref14_cristian_KernelMinimalReq}{manual}{}
+      \name{author}{1}{}{%
+        {{hash=4a97b39872ba27a31d739be5f6e1e967}{%
+           family={{The Kernel Development Team}},
+           familyi={T\bibinitperiod}}}%
+      }
+      \strng{namehash}{4a97b39872ba27a31d739be5f6e1e967}
+      \strng{fullhash}{4a97b39872ba27a31d739be5f6e1e967}
+      \strng{bibnamehash}{4a97b39872ba27a31d739be5f6e1e967}
+      \strng{authorbibnamehash}{4a97b39872ba27a31d739be5f6e1e967}
+      \strng{authornamehash}{4a97b39872ba27a31d739be5f6e1e967}
+      \strng{authorfullhash}{4a97b39872ba27a31d739be5f6e1e967}
+      \field{sortinit}{6}
+      \field{sortinithash}{b33bc299efb3c36abec520a4c896a66d}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Linux Kernel Current Minimal Requirements}
+      \field{year}{2024}
+      \verb{urlraw}
+      \verb https://docs.kernel.org/process/changes.html
+      \endverb
+      \verb{url}
+      \verb https://docs.kernel.org/process/changes.html
+      \endverb
+    \endentry
+    \entry{ref13_cristian_Hokiegeek2024}{misc}{}
+      \name{author}{1}{}{%
+        {{hash=8b2184762daa8724cba2d914babcd836}{%
+           family={hokiegeek2},
+           familyi={h\bibinitperiod}}}%
+      }
+      \strng{namehash}{8b2184762daa8724cba2d914babcd836}
+      \strng{fullhash}{8b2184762daa8724cba2d914babcd836}
+      \strng{bibnamehash}{8b2184762daa8724cba2d914babcd836}
+      \strng{authorbibnamehash}{8b2184762daa8724cba2d914babcd836}
+      \strng{authornamehash}{8b2184762daa8724cba2d914babcd836}
+      \strng{authorfullhash}{8b2184762daa8724cba2d914babcd836}
+      \field{sortinit}{6}
+      \field{sortinithash}{b33bc299efb3c36abec520a4c896a66d}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{howpublished}{GitHub Gist}
+      \field{title}{Install OpenMPI on Ubuntu Guide}
+      \field{year}{2024}
     \endentry
   \enddatalist
 \endrefsection

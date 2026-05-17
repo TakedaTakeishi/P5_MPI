@@ -26,7 +26,7 @@ A pesar de la existencia de un estándar único, la implementación efectiva de 
 
 \begin{table}[H]
     \centering
-    \caption{Comparativa técnica de las principales familias de implementaciones de MPI}
+    \caption{Comparativa técnica de las principales familias de implementaciones de MPI. Fuente: Elaboración propia.}
     \label{tab:mpi_comparison}
     \begin{tabular}{|l|l|p{7cm}|}
     \hline
@@ -51,7 +51,7 @@ Para comprender la estructura de una aplicación MPI, es necesario dominar los c
 
 \begin{table}[H]
     \centering
-    \caption{Conceptos fundamentales de la infraestructura de comunicación de MPI}
+    \caption{Conceptos fundamentales de la infraestructura de comunicación de MPI. Fuente: Elaboración propia.}
     \label{tab:mpi_concepts}
     \begin{tabular}{|l|p{10cm}|}
     \hline
@@ -68,17 +68,10 @@ La formalidad de estos conceptos permite que MPI gestione de manera transparente
 OpenMPI se fundamenta en la Arquitectura de Componentes Modulares (MCA), un diseño de software altamente sofisticado que permite la carga y descarga dinámica de módulos para adaptar la biblioteca a las características específicas del entorno. Esta arquitectura se organiza en tres capas de abstracción principales: OMPI (Open MPI), que implementa la API estándar; ORTE (Open Run-Time Environment), que gestiona el ciclo de vida de los procesos; y OPAL (Open Portable Access Layer), que proporciona utilidades de sistema y abstracciones de plataforma \cite{ref7_cristian_Squyres2004, ref4_cristian_Graham2005}. Debajo de estas, el sistema utiliza marcos de trabajo (frameworks) y componentes para manejar tareas específicas como el paso de mensajes punto a punto o colectivos \cite{ref7_cristian_Squyres2004, ref10_cristian_Ammendola2012}.
 La verdadera potencia de la arquitectura MCA reside en sus marcos de trabajo y componentes, que permiten a OpenMPI seleccionar automáticamente el mejor transporte disponible al inicio de la ejecución. Uno de los marcos de trabajo más críticos es el PML (Point-to-point Messaging Layer), el cual decide la estrategia de entrega de mensajes de alto nivel y coordina la fragmentación de los mismos a través de múltiples redes \cite{ref5_cristian_Graham2006, ref10_cristian_Ammendola2012}. Para el movimiento efectivo de bytes, OpenMPI utiliza el marco BTL (Byte Transfer Layer), con módulos especializados para TCP, InfiniBand (openib) y memoria compartida (sm), permitiendo que un solo mensaje se distribuya a través de múltiples canales físicos \cite{ref7_cristian_Squyres2004, ref10_cristian_Ammendola2012}.
 
-% ==================================================
-%
-% Insertar aquí diagrama de arquitectura de OpenMPI
-% Debe mostrar las capas OMPI, ORTE/PRRTE, OPAL
-% Debe incluir los frameworks MCA (PML, BTL, MTL)
-% ==================================================
-
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.85\textwidth]{imagenes/Cristian/cristian1_MPIarchitecture.png}
-    \caption{Diagrama esquemático de la arquitectura de OpenMPI mostrando la interconexión entre las capas OMPI, ORTE y OPAL junto con los componentes MCA.}
+    \caption{Diagrama esquemático de la arquitectura de OpenMPI mostrando la interconexión entre las capas OMPI, ORTE y OPAL junto con los componentes MCA. Fuente: Elaboración propia.}
     \label{fig:openmpi_architecture}
 \end{figure}
 
@@ -89,7 +82,7 @@ Una vez compilado el programa, la ejecución se orquesta mediante la utilidad \t
 
 \begin{table}[H]
     \centering
-    \caption{Opciones críticas para la ejecución de procesos con mpirun}
+    \caption{Opciones críticas para la ejecución de procesos con mpirun. Fuente: Elaboración propia.}
     \label{tab:mpirun_flags}
     \begin{tabular}{|l|l|p{7cm}|}
     \hline
@@ -109,7 +102,7 @@ La instalación de OpenMPI en distribuciones Debian o Ubuntu requiere una planif
 El proceso comienza con la actualización de los repositorios locales para sincronizar los metadatos de los paquetes con las versiones más recientes. Además, es fundamental contar con el conjunto de herramientas de compilación esencial de GNU, que incluye el compilador GCC, la utilidad \texttt{make} y las bibliotecas de desarrollo de C (\texttt{libc6-dev}) \cite{ref13_cristian_Hokiegeek2024}. Estas herramientas son necesarias tanto para la construcción de los programas MPI como para el enlazado con la biblioteca. En la Tabla \ref{tab:install_requirements} se enumeran los componentes previos obligatorios que deben estar presentes en el sistema.
 \begin{table}[H]
 \centering
-\caption{Dependencias y requisitos previos para la instalación de OpenMPI}
+\caption{Dependencias y requisitos previos para la instalación de OpenMPI. Fuente: Elaboración propia.}
 \label{tab:install_requirements}
 \begin{tabular}{|l|l|p{7cm}|}
 \hline
@@ -131,30 +124,42 @@ El comando para llevar a cabo esta acción en sistemas basados en Debian es \tex
 % - Salida del terminal sin errores
 % - Confirmación de que se han instalado los paquetes correctamente
 % ==================================================
+
 \begin{figure}[H]
-\centering
-\includegraphics[width=0.8\textwidth]{imagenes/Cristian/cristian2_openmpi-bin3.png}
-\caption{Evidencia de la ejecución exitosa del comando de instalación para el paquete openmpi-bin en una terminal de Ubuntu.}
-\label{fig:captura-openmpi-bin}
+    \centering
+    \includegraphics[width=0.8\textwidth]{imagenes/Cristian/cristian2_openmpi-bin3.png}
+    \caption{Evidencia de la ejecución exitosa del comando de instalación para el paquete openmpi-bin en una terminal de Ubuntu. Fuente: Elaboración propia.}
+    \label{fig:captura-openmpi-bin}
 \end{figure}
+
 Al analizar la captura de pantalla de la Figura \ref{fig:captura-openmpi-bin}, se observa que el gestor de paquetes también instala componentes auxiliares como \texttt{openmpi-common}, que alberga los archivos de configuración globales necesarios para el comportamiento coherente de la biblioteca \cite{ref12_cristian_Ubuntu_Packages}. Esta etapa es fundamental, ya que sin los binarios de ejecución es imposible validar el funcionamiento de cualquier programa paralelo. Una vez finalizada esta fase, el usuario puede ejecutar \texttt{mpirun --version} para confirmar que el runtime está activo y reporta la versión correcta de OpenMPI \cite{ref11_cristian_OpenMPI_FAQ}.
+
 \subsection{Instalación de Símbolos de Depuración: openmpi-dbg}
+
 El paquete \texttt{openmpi-dbg} es una herramienta indispensable para el análisis técnico profundo y la resolución de fallos complejos en aplicaciones de cómputo paralelo. Contiene los símbolos de depuración que permiten a herramientas como GDB (GNU Debugger) traducir las direcciones de memoria de la biblioteca OpenMPI a nombres de funciones y números de línea de código fuente legibles \cite{ref12_cristian_Ubuntu_Packages, ref13_cristian_Hokiegeek2024}. En entornos de laboratorio, este paquete es vital cuando los procesos paralelos experimentan errores de segmentación o interbloqueos, ya que permite realizar un rastreo de la pila (stack trace) completo para identificar el origen del fallo \cite{ref11_cristian_OpenMPI_FAQ}.
-La instalación se realiza mediante el comando \texttt{sudo apt install openmpi-dbg}, el cual descarga metadatos de depuración voluminosos que se integran automáticamente con los binarios instalados previamente. Aunque este paquete no altera el rendimiento de ejecución, su presencia consume un espacio considerable en disco, por lo que su instalación suele ser mandatoria solo en estaciones de desarrollo y laboratorios de enseñanza \cite{ref12_cristian_Ubuntu_Packages}. En la Figura \ref{fig:captura-openmpi-dbg} se muestra la confirmación de la instalación de estos recursos adicionales de diagnóstico.
+
+Sin embargo, es necesario señalar una particularidad relevante en las distribuciones Linux modernas. A partir de la versión Ubuntu 22.04 LTS (Jammy Jellyfish) y su continuación Ubuntu 24.04 LTS (Noble Numbat), el paquete tradicional \texttt{openmpi-dbg} ha sido descontinuado. Esta decisión forma parte de una evolución en el ecosistema de empaquetado de Debian/Ubuntu, donde los símbolos de depuración se han migrado a un nuevo sistema basado en repositorios \texttt{dbgsym} independientes o al mecanismo \texttt{debuginfod}. El objetivo principal de este cambio es reducir el tamaño de las instalaciones base, ya que los símbolos de depuración pueden ocupar varios cientos de megabytes, y separarlos en repositorios opcionales permite a los usuarios instalar únicamente los componentes que realmente necesitan para su flujo de trabajo \cite{ref12_cristian_Ubuntu_Packages}.
+
+Como consecuencia, al intentar ejecutar \texttt{sudo apt install openmpi-dbg} en estas versiones, el gestor de paquetes responde con el error \enquote{E: No se ha podido localizar el paquete openmpi-dbg}, indicando que el paquete no existe en los repositorios habilitados. En la Figura \ref{fig:captura-openmpi-dbg} se evidencia este comportamiento, donde el sistema no logra localizar el paquete solicitado. Para entornos que requieran capacidades de depuración avanzadas, existen alternativas como la instalación del paquete \texttt{openmpi-bin-dbgsym} (disponible en repositorios especializados) o la compilación manual desde el código fuente con la flag \texttt{--enable-debug}. No obstante, para los propósitos fundamentales de compilación y ejecución de aplicaciones MPI que se abordan en esta práctica, los paquetes base \texttt{openmpi-bin} y \texttt{libopenmpi-dev} son totalmente suficientes.
+
+La instalación convencional se describe mediante el comando \texttt{sudo apt install openmpi-dbg}, el cual, en versiones anteriores de Ubuntu, descargaba metadatos de depuración voluminosos que se integraban automáticamente con los binarios instalados previamente. Aunque este paquete no altera el rendimiento de ejecución, su presencia consume un espacio considerable en disco, por lo que su instalación era mandatoria solo en estaciones de desarrollo y laboratorios de enseñanza \cite{ref12_cristian_Ubuntu_Packages}. En la Figura \ref{fig:captura-openmpi-dbg} se muestra la salida del terminal al intentar la instalación en una versión moderna de Ubuntu, documentando la indisponibilidad del paquete.
+
 % ==================================================
 %
 % Insertar aquí captura de pantalla que muestre:
 % - Comando ejecutado: apt install openmpi-dbg
-% - Salida del terminal sin errores
-% - Confirmación de que se han instalado los paquetes correctamente
+% - Salida del terminal con el error
+% - Mensaje: "E: No se ha podido localizar el paquete openmpi-dbg"
 % ==================================================
 \begin{figure}[H]
 \centering
-%\includegraphics[width=0.8\textwidth]{imagenes/Cristian/cristian3_libopenmpi-dev2.png}
-\caption{Proceso de instalación del paquete de símbolos de depuración openmpi-dbg para el análisis avanzado de fallos.}
+\includegraphics[width=0.8\textwidth]{imagenes/Cristian/cristian_error_openmpi_dbg.png}
+\caption{Intento de instalación del paquete openmpi-dbg en Ubuntu 24.04 LTS. El sistema responde con un error de localización, evidenciando la descontinuación de este paquete en distribuciones Linux modernas. Fuente: Elaboración propia. Fuente: Elaboración propia.}
 \label{fig:captura-openmpi-dbg}
 \end{figure}
-Como se puede apreciar en la Figura \ref{fig:captura-openmpi-dbg}, el proceso de instalación de los símbolos de depuración añade una capa de seguridad operativa al entorno de trabajo. Gracias a estos símbolos, el desarrollador puede inspeccionar el estado interno de los comunicadores y grupos de procesos en tiempo real, facilitando la comprensión de cómo se gestionan los buffers de mensajes en las capas internas \cite{ref7_cristian_Squyres2004, ref10_cristian_Ammendola2012}. Esta capacidad de introspección técnica es lo que distingue a un experto en sistemas paralelos, permitiendo optimizar el código basándose en evidencias reales de comportamiento dinámico \cite{ref11_cristian_OpenMPI_FAQ}.
+
+Como se puede apreciar en la Figura \ref{fig:captura-openmpi-dbg}, el proceso de instalación del paquete de símbolos de depuración no se completa exitosamente en versiones recientes del sistema operativo. En su lugar, el gestor de paquetes APT retorna un mensaje claro de que no es posible localizar el recurso solicitado. Esta situación ilustra la naturaleza dinámica del ecosistema Linux, donde los paquetes evolucionan y se adaptan a nuevas políticas de distribución. Para el desarrollador que requiera capacidades de introspección técnica, se recomienda consultar la documentación oficial de su distribución para acceder a los repositorios \texttt{dbgsym} correspondientes. No obstante, para el ámbito académico y formativo de esta práctica, la ausencia de este paquete no representa una limitación, ya que los conceptos fundamentales de depuración pueden ser abordados con las herramientas estándar del sistema \cite{ref11_cristian_OpenMPI_FAQ}.
+
 \subsection{Instalación de Cabeceras y Bibliotecas de Desarrollo: libopenmpi-dev}
 Para que un programador pueda construir aplicaciones utilizando el estándar MPI, es estrictamente necesario contar con el paquete \texttt{libopenmpi-dev}, el cual alberga los archivos de cabecera (\texttt{.h}), las bibliotecas estáticas y los objetos compartidos. Sin este componente, el compilador no sería capaz de resolver las definiciones de funciones críticas como \texttt{MPI\_Init} o \texttt{MPI\_Send}, resultando en errores catastróficos durante la fase de enlazado \cite{ref11_cristian_OpenMPI_FAQ, ref12_cristian_Ubuntu_Packages}. Además de las cabeceras estándar de C, este paquete incluye los módulos necesarios para el soporte de Fortran y C++, así como archivos de configuración para herramientas de construcción automáticas \cite{ref12_cristian_Ubuntu_Packages}.
 El comando de instalación es \texttt{sudo apt install libopenmpi-dev}, y su ejecución completa el tríptico necesario para un entorno de programación funcional. Tras la instalación, los envoltorios \texttt{mpicc} y \texttt{mpicxx} quedan plenamente configurados para buscar automáticamente las dependencias en los directorios del sistema, eliminando la necesidad de gestionar manualmente flags de compilación complejos \cite{ref13_cristian_Hokiegeek2024, ref12_cristian_Ubuntu_Packages}. En la Figura \ref{fig:captura-libopenmpi-dev} se evidencia la conclusión del proceso de preparación del entorno de desarrollo paralelo.
@@ -168,23 +173,28 @@ El comando de instalación es \texttt{sudo apt install libopenmpi-dev}, y su eje
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.8\textwidth]{imagenes/Cristian/cristian3_libopenmpi-dev2.png}
-\caption{Finalización de la instalación del paquete de desarrollo libopenmpi-dev indispensable para la creación de software paralelo.}
+\caption{Finalización de la instalación del paquete de desarrollo libopenmpi-dev indispensable para la creación de software paralelo. Fuente: Elaboración propia.}
 \label{fig:captura-libopenmpi-dev}
 \end{figure}
 El análisis de la Figura \ref{fig:captura-libopenmpi-dev} permite confirmar que el sistema dispone ahora de todas las herramientas necesarias para transformar el código fuente en ejecutables paralelos eficientes. Es importante destacar que la versión instalada de las bibliotecas de desarrollo debe coincidir con la versión del runtime presente en el sistema para evitar incompatibilidades binarias que podrían provocar fallos inesperados en tiempo de ejecución \cite{ref5_cristian_Graham2006, ref11_cristian_OpenMPI_FAQ}. Con la instalación de estos tres paquetes, el sistema Linux queda transformado en un nodo de cómputo de alto rendimiento capaz de participar en simulaciones distribuidas \cite{ref11_cristian_OpenMPI_FAQ}.
+
+
 \section{Configuración Básica y Post-Instalación en Linux}
+
 \subsection{Gestión de Variables de Entorno y Rutas de Sistema}
 Una configuración correcta de las variables de entorno es vital para asegurar que el sistema localice los binarios y bibliotecas de OpenMPI de forma consistente, especialmente cuando se trabaja en clústeres. La variable \texttt{PATH} debe incluir el directorio donde se encuentran los ejecutables, mientras que la variable \texttt{LD\_LIBRARY\_PATH} debe apuntar a la ubicación de las bibliotecas compartidas para que el cargador dinámico pueda resolver las dependencias \cite{ref11_cristian_OpenMPI_FAQ, ref13_cristian_Hokiegeek2024}. Aunque las instalaciones mediante gestores de paquetes suelen configurar estas rutas automáticamente, es una buena práctica verificar su estado para prevenir conflictos con otras implementaciones de MPI que pudieran estar presentes \cite{ref13_cristian_Hokiegeek2024}.
 En entornos más complejos, se recomienda el uso de sistemas de gestión de módulos, los cuales permiten cargar y descargar dinámicamente diferentes versiones de OpenMPI según las necesidades de cada proyecto. Esta aproximación evita la contaminación del entorno global del usuario y facilita la reproducibilidad de los experimentos científicos al garantizar que siempre se utilice la misma pila de software \cite{ref11_cristian_OpenMPI_FAQ, ref12_cristian_Ubuntu_Packages}. En ausencia de estos gestores, el usuario puede agregar las definiciones necesarias a su archivo de configuración de shell (ej. \texttt{.bashrc}) para asegurar que el entorno esté listo en cada nueva sesión de terminal \cite{ref11_cristian_OpenMPI_FAQ}.
+
 \subsection{Configuración de SSH para Ejecución Multiclúster}
 La ejecución de procesos en múltiples nodos físicos requiere que OpenMPI pueda iniciar daemons de forma remota sin la intervención manual del usuario para ingresar contraseñas. Para lograr esto, se utiliza el protocolo SSH con autenticación basada en claves criptográficas, lo que permite una comunicación segura y automatizada entre el nodo maestro y los trabajadores \cite{ref11_cristian_OpenMPI_FAQ}. El procedimiento consiste en generar una pareja de claves mediante \texttt{ssh-keygen} en el nodo maestro y distribuir la clave pública a todos los nodos participantes, agregándola al archivo \texttt{$\sim$/.ssh/authorized\_keys} \cite{ref11_cristian_OpenMPI_FAQ}.
 Además del intercambio de claves, es fundamental asegurar que los permisos de los archivos y directorios de configuración de SSH sean los correctos para cumplir con las políticas de seguridad de Linux. Una verificación crítica consiste en realizar un acceso remoto de prueba mediante \texttt{ssh nodo\_remoto hostname}; si el comando retorna el nombre del nodo sin solicitar credenciales, la configuración se considera exitosa \cite{ref11_cristian_OpenMPI_FAQ}. Esta infraestructura de confianza es lo que permite que \texttt{mpirun} despliegue aplicaciones de forma transparente a través de múltiples máquinas en cuestión de segundos \cite{ref11_cristian_OpenMPI_FAQ}.
+
 \subsection{Verificación y Sintonización de Parámetros MCA}
 La Arquitectura de Componentes Modulares (MCA) es el motor que otorga a OpenMPI su capacidad de adaptación, y su correcta configuración es esencial para extraer el máximo rendimiento del hardware. Los parámetros MCA permiten controlar aspectos finos de la comunicación, como la selección de interfaces de red y los umbrales entre protocolos de envío ansioso (eager) y de cita (rendezvous) \cite{ref7_cristian_Squyres2004, ref10_cristian_Ammendola2012}. Estos valores pueden definirse a través de argumentos en la línea de comandos, mediante variables de entorno con el prefijo \texttt{OMPI\_MCA\_}, o en los archivos de configuración globales \cite{ref7_cristian_Squyres2004, ref11_cristian_OpenMPI_FAQ}.
 Para verificar qué parámetros están activos, el comando \texttt{ompi\_info --all} proporciona una visión exhaustiva de todos los frameworks instalados y sus variables asociadas. En el contexto de una práctica de laboratorio, un ajuste común consiste en deshabilitar componentes de red no deseados para evitar que OpenMPI intente comunicarse a través de interfaces lentas \cite{ref5_cristian_Graham2006, ref10_cristian_Ammendola2012}. En la Tabla \ref{tab:mca_levels} se describen los niveles de los parámetros MCA según la especificación MPI\_T, lo que permite a los usuarios identificar qué variables son seguras de modificar \cite{ref11_cristian_OpenMPI_FAQ, ref7_cristian_Squyres2004}.
 \begin{table}[H]
 \centering
-\caption{Niveles de clasificación de los parámetros MCA en OpenMPI}
+\caption{Niveles de clasificación de los parámetros MCA en OpenMPI. Fuente: Elaboración propia.}
 \label{tab:mca_levels}
 \begin{tabular}{|l|l|p{7cm}|}
 \hline
@@ -200,7 +210,7 @@ El análisis de la Tabla \ref{tab:mca_levels} subraya la complejidad intrínseca
 La prueba definitiva de un entorno MPI configurado correctamente es la compilación exitosa y la ejecución distribuida de un programa de prueba mínimo. Este programa tiene como objetivo inicializar el entorno paralelo, identificar el rango del proceso y el tamaño total del comunicador, e imprimir estos valores antes de finalizar ordenadamente \cite{ref9_cristian_Gropp1996, ref8_cristian_Nielsen2016, ref11_cristian_OpenMPI_FAQ}. Para compilar este código, se utiliza el envoltorio \texttt{mpicc}, lo cual genera un binario vinculado con todas las bibliotecas necesarias \cite{ref11_cristian_OpenMPI_FAQ, ref12_cristian_Ubuntu_Packages}. En la Tabla \ref{tab:hello_code} se presenta la estructura técnica de este programa esencial.
 \begin{table}[H]
 \centering
-\caption{Estructura técnica de un programa de verificación MPI en C}
+\caption{Estructura técnica de un programa de verificación MPI en C. Fuente: Elaboración propia.}
 \label{tab:hello_code}
 \begin{tabular}{|l|p{10cm}|}
 \hline
