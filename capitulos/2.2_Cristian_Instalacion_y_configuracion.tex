@@ -19,9 +19,7 @@
 
 La computación de alto rendimiento (HPC) experimentó una transformación radical a principios de la década de 1990, impulsada por la necesidad de migrar de costosas supercomputadoras monolíticas hacia sistemas distribuidos compuestos por estaciones de trabajo interconectadas. El esfuerzo de estandarización que dio origen al Message Passing Interface (MPI) comenzó formalmente en el verano de 1991, cuando un consorcio de investigadores de la academia, la industria y laboratorios gubernamentales se reunió para definir una interfaz común que garantizara la portabilidad y eficiencia del software paralelo \cite{ref3_cristian_Walker1992}. Antes de esta convergencia, los desarrolladores dependían de bibliotecas heterogéneas como PVM (Parallel Virtual Machine), las cuales, aunque pioneras, carecían de la semántica de comunicación optimizada necesaria para extraer el máximo provecho de las arquitecturas de memoria distribuida emergentes en aquel periodo \cite{ref8_cristian_Nielsen2016}. 
 
-La liberación de la versión 1.0 de MPI en junio de 1994 marcó el inicio de una era de interoperabilidad que permitió que el mismo código científico se ejecutara en diversas plataformas sin modificaciones sustanciales \cite{ref2_cristian_MPIStandard10}.
-
-OpenMPI, por su parte, no surgió como una implementación aislada, sino como el resultado de una consolidación estratégica de esfuerzos previos que buscaban superar las limitaciones de las bibliotecas existentes a principios de los años 2000. El proyecto nació de la fusión de cuatro implementaciones fundamentales: FT-MPI de la Universidad de Tennessee, LA-MPI del Laboratorio Nacional de Los Álamos, LAM/MPI de la Universidad de Indiana y PACX-MPI de la Universidad de Stuttgart \cite{ref4_cristian_Graham2005, ref5_cristian_Graham2006}. Esta unión de tecnologías, formalizada en 2003, permitió integrar conceptos avanzados como la tolerancia a fallos, la fiabilidad de red y el soporte para entornos de ejecución multiclúster en una única plataforma de código abierto de grado de producción \cite{ref6_cristian_Graham2007}. Desde su lanzamiento oficial en la conferencia Supercomputing 2005, OpenMPI ha mantenido un ciclo de desarrollo constante, adoptando las especificaciones de los estándares MPI-2, MPI-3 y recientemente MPI-4.1, consolidándose como la infraestructura preferida para muchas de las supercomputadoras presentes en la lista TOP500 \cite{ref1_cristian_MPIStandard41, ref4_cristian_Graham2005}.
+La liberación de la versión 1.0 de MPI en junio de 1994 marcó el inicio de una era de interoperabilidad que permitió que el mismo código científico se ejecutara en diversas plataformas sin modificaciones sustanciales \cite{ref2_cristian_MPIStandard10}. OpenMPI, por su parte, no surgió como una implementación aislada, sino como el resultado de una consolidación estratégica de esfuerzos previos que buscaban superar las limitaciones de las bibliotecas existentes a principios de los años 2000. El proyecto nació de la fusión de cuatro implementaciones fundamentales: FT-MPI de la Universidad de Tennessee, LA-MPI del Laboratorio Nacional de Los Álamos, LAM/MPI de la Universidad de Indiana y PACX-MPI de la Universidad de Stuttgart \cite{ref4_cristian_Graham2005, ref5_cristian_Graham2006}. Esta unión de tecnologías, formalizada en 2003, permitió integrar conceptos avanzados como la tolerancia a fallos, la fiabilidad de red y el soporte para entornos de ejecución multiclúster en una única plataforma de código abierto de grado de producción \cite{ref6_cristian_Graham2007}. Desde su lanzamiento oficial en la conferencia Supercomputing 2005, OpenMPI ha mantenido un ciclo de desarrollo constante, adoptando las especificaciones de los estándares MPI-2, MPI-3 y recientemente MPI-4.1, consolidándose como la infraestructura preferida para muchas de las supercomputadoras presentes en la lista TOP500 \cite{ref1_cristian_MPIStandard41, ref4_cristian_Graham2005}.
 
 \subsection{Definiciones Fundamentales y Tipologías de Bibliotecas}
 
@@ -115,15 +113,13 @@ El análisis de las opciones presentadas en la Tabla \ref{tab:mpirun_flags} subr
 
 \section{Proceso de Instalación en Linux (Debian/Ubuntu)}
 
-\subsection{Requisitos del Sistema y Preparación del Entorno}
-
 La instalación de OpenMPI en distribuciones Debian o Ubuntu requiere una planificación adecuada de las dependencias de software y los recursos de hardware. Antes de iniciar la descarga, es imperativo asegurarse de contar con una versión de kernel actualizada (preferiblemente serie 5.x o superior) para soportar las últimas optimizaciones en la pila de red \cite{ref14_cristian_KernelMinimalReq}. Asimismo, se debe verificar la disponibilidad de espacio en disco; aunque una instalación mínima ocupa aproximadamente 150 MB, el desarrollo de aplicaciones y la generación de archivos de depuración pueden elevar significativamente este requerimiento, recomendándose reservar al menos 1 GB de espacio libre \cite{ref12_cristian_Ubuntu_Packages}.
 
 El proceso comienza con la actualización de los repositorios locales para sincronizar los metadatos de los paquetes con las versiones más recientes. Además, es fundamental contar con el conjunto de herramientas de compilación esencial de GNU, que incluye el compilador GCC, la utilidad \texttt{make} y las bibliotecas de desarrollo de C (\texttt{libc6-dev}) \cite{ref13_cristian_Hokiegeek2024}. Estas herramientas son necesarias tanto para la construcción de los programas MPI como para el enlazado con la biblioteca. En la Tabla \ref{tab:install_requirements} se enumeran los componentes previos obligatorios que deben estar presentes en el sistema.
 
 \begin{table}[H]
     \centering
-    \caption{Dependencias y requisitos previos para la instalación de OpenMPI. Fuente: Elaboración propia.}
+    \caption{Dependencias y requisitos previos para la instalación de OpenMPI. Fuente: Elaboración propia con base en \cite{ref12_cristian_Ubuntu_Packages, ref13_cristian_Hokiegeek2024, ref14_cristian_KernelMinimalReq}.}
     \label{tab:install_requirements}
     \begin{tabular}{|l|l|p{7cm}|}
     \hline
@@ -141,9 +137,7 @@ Como se desprende de la Tabla \ref{tab:install_requirements}, la instalación de
 
 El paquete \texttt{openmpi-bin} constituye el núcleo operativo para el usuario final, proporcionando los archivos ejecutables necesarios para la gestión del ciclo de vida de las aplicaciones paralelas. Entre las herramientas incluidas destacan \texttt{mpirun} y \texttt{mpiexec}, así como la utilidad \texttt{ompi\_info}, que permite inspeccionar la configuración detallada de los componentes MCA instalados \cite{ref11_cristian_OpenMPI_FAQ, ref12_cristian_Ubuntu_Packages}. La instalación de este paquete también despliega los daemons de soporte necesarios para la comunicación entre nodos, asegurando que el entorno de ejecución ORTE esté disponible para orquestar la computación de alto rendimiento \cite{ref7_cristian_Squyres2004, ref4_cristian_Graham2005}.
 
-El comando para llevar a cabo esta acción en sistemas basados en Debian es \texttt{sudo apt install openmpi-bin}. Tras su ejecución, el sistema descarga los binarios compilados y configura automáticamente los enlaces simbólicos en directorios estándar como \texttt{/usr/bin/}, permitiendo que los comandos sean accesibles desde cualquier terminal sin ajustes manuales adicionales \cite{ref13_cristian_Hokiegeek2024}. 
-
-En la Figura \ref{fig:captura-completed-openmpi-bin} se muestra la ejecución del comando de instalación, donde se evidencia el error de localización del paquete al no estar disponible en las versiones modernas de Ubuntu.
+El comando para llevar a cabo esta acción en sistemas basados en Debian es \texttt{sudo apt install openmpi-bin}. Tras su ejecución, el sistema descarga los binarios compilados y configura automáticamente los enlaces simbólicos en directorios estándar como \texttt{/usr/bin/}, permitiendo que los comandos sean accesibles desde cualquier terminal sin ajustes manuales adicionales \cite{ref13_cristian_Hokiegeek2024}. En la Figura \ref{fig:captura-completed-openmpi-bin} se muestra la ejecución del comando de instalación, donde se evidencia una instalación exitosa sin errores, confirmando que los paquetes se han instalado correctamente y que el entorno de ejecución de OpenMPI está listo para su uso.
 
 % ==================================================
 % Insertar aquí captura de pantalla que muestre:
@@ -188,7 +182,7 @@ La instalación convencional se describe mediante el comando \texttt{sudo apt in
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{imagenes/Cristian/cristian_error_openmpi_dbg.png}
-    \caption{Intento de instalación del paquete openmpi-dbg en Ubuntu 24.04 LTS. El sistema responde con un error de localización, evidenciando la descontinuación de este paquete en distribuciones Linux modernas. Fuente: Elaboración propia. Fuente: Elaboración propia.}
+    \caption{Intento de instalación del paquete openmpi-dbg en Ubuntu 24.04 LTS. El sistema responde con un error de localización, evidenciando la descontinuación de este paquete en distribuciones Linux modernas. Fuente: Elaboración propia.}
     \label{fig:captura-openmpi-dbg}
 \end{figure}
 
@@ -198,9 +192,7 @@ Como se puede apreciar en la Figura \ref{fig:captura-openmpi-dbg}, el proceso de
 
 Para que un programador pueda construir aplicaciones utilizando el estándar MPI, es estrictamente necesario contar con el paquete \texttt{libopenmpi-dev}, el cual alberga los archivos de cabecera (\texttt{.h}), las bibliotecas estáticas y los objetos compartidos. Sin este componente, el compilador no sería capaz de resolver las definiciones de funciones críticas como \texttt{MPI\_Init} o \texttt{MPI\_Send}, resultando en errores catastróficos durante la fase de enlazado \cite{ref11_cristian_OpenMPI_FAQ, ref12_cristian_Ubuntu_Packages}. Además de las cabeceras estándar de C, este paquete incluye los módulos necesarios para el soporte de Fortran y C++, así como archivos de configuración para herramientas de construcción automáticas \cite{ref12_cristian_Ubuntu_Packages}.
 
-El comando de instalación es \texttt{sudo apt install libopenmpi-dev}, y su ejecución completa el tríptico necesario para un entorno de programación funcional. Tras la instalación, los envoltorios \texttt{mpicc} y \texttt{mpicxx} quedan plenamente configurados para buscar automáticamente las dependencias en los directorios del sistema, eliminando la necesidad de gestionar manualmente flags de compilación complejos \cite{ref13_cristian_Hokiegeek2024, ref12_cristian_Ubuntu_Packages}. 
-
-En la Figura \ref{fig:captura-libopenmpi-dev} se muestra la ejecución del comando de instalación, mientras que en la Figura \ref{fig:captura-completed-libopenmpi-dev} se puede apreciar la correcta finalización del proceso de instalación del paquete de desarrollo.
+El comando de instalación es \texttt{sudo apt install libopenmpi-dev}, y su ejecución completa el tríptico necesario para un entorno de programación funcional. Tras la instalación, los envoltorios \texttt{mpicc} y \texttt{mpicxx} quedan plenamente configurados para buscar automáticamente las dependencias en los directorios del sistema, eliminando la necesidad de gestionar manualmente flags de compilación complejos \cite{ref13_cristian_Hokiegeek2024, ref12_cristian_Ubuntu_Packages}. En la Figura \ref{fig:captura-libopenmpi-dev} se muestra la ejecución del comando de instalación, mientras que en la Figura \ref{fig:captura-completed-libopenmpi-dev} se puede apreciar la correcta finalización del proceso de instalación del paquete de desarrollo.
 
 % ==================================================
 % Insertar aquí captura de pantalla que muestre:
@@ -228,8 +220,6 @@ El análisis de la Figura \ref{fig:captura-completed-libopenmpi-dev} permite con
 
 \section{Configuración Básica y Post-Instalación en Linux}
 
-\subsection{Gestión de Variables de Entorno y Rutas de Sistema}
-
 Una configuración correcta de las variables de entorno es vital para asegurar que el sistema localice los binarios y bibliotecas de OpenMPI de forma consistente, especialmente cuando se trabaja en clústeres. La variable \texttt{PATH} debe incluir el directorio donde se encuentran los ejecutables, mientras que la variable \texttt{LD\_LIBRARY\_PATH} debe apuntar a la ubicación de las bibliotecas compartidas para que el cargador dinámico pueda resolver las dependencias \cite{ref11_cristian_OpenMPI_FAQ, ref13_cristian_Hokiegeek2024}. Aunque las instalaciones mediante gestores de paquetes suelen configurar estas rutas automáticamente, es una buena práctica verificar su estado para prevenir conflictos con otras implementaciones de MPI que pudieran estar presentes \cite{ref13_cristian_Hokiegeek2024}.
 
 En entornos más complejos, se recomienda el uso de sistemas de gestión de módulos, los cuales permiten cargar y descargar dinámicamente diferentes versiones de OpenMPI según las necesidades de cada proyecto. Esta aproximación evita la contaminación del entorno global del usuario y facilita la reproducibilidad de los experimentos científicos al garantizar que siempre se utilice la misma pila de software \cite{ref11_cristian_OpenMPI_FAQ, ref12_cristian_Ubuntu_Packages}. En ausencia de estos gestores, el usuario puede agregar las definiciones necesarias a su archivo de configuración de shell (ej. \texttt{.bashrc}) para asegurar que el entorno esté listo en cada nueva sesión de terminal \cite{ref11_cristian_OpenMPI_FAQ}.
@@ -248,7 +238,7 @@ Para verificar qué parámetros están activos, el comando \texttt{ompi\_info --
 
 \begin{table}[H]
     \centering
-    \caption{Niveles de clasificación de los parámetros MCA en OpenMPI. Fuente: Elaboración propia.}
+    \caption{Niveles de clasificación de los parámetros MCA en OpenMPI. Fuente: Elaboración propia con base en \cite{ref7_cristian_Squyres2004, ref11_cristian_OpenMPI_FAQ}.}
     \label{tab:mca_levels}
     \begin{tabular}{|l|l|p{7cm}|}
     \hline
@@ -263,7 +253,6 @@ El análisis de la Tabla \ref{tab:mca_levels} subraya la complejidad intrínseca
 
 \section{Verificación Práctica: Desarrollo y Ejecución}
 
-\subsection{Compilación y Ejecución del Programa mpi\_hello.c}
 
 La prueba definitiva de un entorno MPI configurado correctamente es la compilación exitosa y la ejecución distribuida de un programa de prueba mínimo. Este programa tiene como objetivo inicializar el entorno paralelo, identificar el rango del proceso y el tamaño total del comunicador, e imprimir estos valores antes de finalizar ordenadamente \cite{ref9_cristian_Gropp1996, ref8_cristian_Nielsen2016, ref11_cristian_OpenMPI_FAQ}. Para compilar este código, se utiliza el envoltorio \texttt{mpicc}, lo cual genera un binario vinculado con todas las bibliotecas necesarias \cite{ref11_cristian_OpenMPI_FAQ, ref12_cristian_Ubuntu_Packages}. En la Tabla \ref{tab:hello_code} se presenta la estructura técnica de este programa esencial.
 
@@ -282,10 +271,9 @@ La prueba definitiva de un entorno MPI configurado correctamente es la compilaci
     \end{tabular}
 \end{table}
 
-Tras la compilación, se requiere lanzar 8 procesos paralelos mediante el comando \texttt{mpirun -np 8 ./mpi\_hello}. Si la configuración es correcta, el terminal mostrará 8 líneas de salida, cada una reportando un rango único entre 0 y 7, lo que confirma que el entorno de ejecución ha logrado desplegar satisfactoriamente todas las instancias del programa \cite{ref9_cristian_Gropp1996, ref11_cristian_OpenMPI_FAQ}. Este paso es fundamental, ya que valida no solo la instalación local, sino también la capacidad del sistema operativo para gestionar múltiples procesos colaborativos simultáneamente \cite{ref4_cristian_Graham2005, ref11_cristian_OpenMPI_FAQ}.
+Tras la compilación, por ejemplo, se requiere lanzar 8 procesos paralelos mediante el comando \texttt{mpirun -np 8 ./mpi\_hello}. Si la configuración es correcta, el terminal mostrará 8 líneas de salida, cada una reportando un rango único entre 0 y 7, lo que confirma que el entorno de ejecución ha logrado desplegar satisfactoriamente todas las instancias del programa \cite{ref9_cristian_Gropp1996, ref11_cristian_OpenMPI_FAQ}. Este paso es fundamental, ya que valida no solo la instalación local, sino también la capacidad del sistema operativo para gestionar múltiples procesos colaborativos simultáneamente \cite{ref4_cristian_Graham2005, ref11_cristian_OpenMPI_FAQ}. En la siguiente sección se mostrará un ejemplo completo que ejecuta todo el flujo operativo.
 
-\subsection{Marco Práctico: Roles de los Nodos y Comunicación Punto a Punto}
 
-En el desarrollo de aplicaciones paralelas reales, la asignación de roles a los procesos es una técnica fundamental para organizar el flujo de trabajo. En una ejecución con 8 procesos, el proceso con rango 0 se designa tradicionalmente como el nodo "maestro", cuya responsabilidad principal es la distribución de tareas hacia los trabajadores y la recopilación de los resultados finales \cite{ref9_cristian_Gropp1996, ref8_cristian_Nielsen2016}. Los procesos con rangos del 1 al 7 actúan como "trabajadores", dedicándose exclusivamente a realizar cálculos intensivos sobre los subconjuntos de datos recibidos del maestro, minimizando así las operaciones de E/S \cite{ref9_cristian_Gropp1996, ref8_cristian_Nielsen2016}.
+Para finalizar, en el desarrollo de aplicaciones paralelas reales, la asignación de roles a los procesos es una técnica fundamental para organizar el flujo de trabajo. En una ejecución con 8 procesos, el proceso con rango 0 se designa tradicionalmente como el nodo "maestro", cuya responsabilidad principal es la distribución de tareas hacia los trabajadores y la recopilación de los resultados finales \cite{ref9_cristian_Gropp1996, ref8_cristian_Nielsen2016}. Los procesos con rangos del 1 al 7 actúan como "trabajadores", dedicándose exclusivamente a realizar cálculos intensivos sobre los subconjuntos de datos recibidos del maestro, minimizando así las operaciones de E/S \cite{ref9_cristian_Gropp1996, ref8_cristian_Nielsen2016}.
 
 Este esquema se implementa mediante primitivas de comunicación punto a punto, específicamente \texttt{MPI\_Send} y \texttt{MPI\_Recv}. El nodo maestro utiliza un bucle para enviar mensajes individuales a cada rango trabajador, especificando el buffer de datos, el tamaño y una etiqueta para identificar el propósito del mensaje \cite{ref9_cristian_Gropp1996, ref1_cristian_MPIStandard41}. Por su parte, cada trabajador invoca \texttt{MPI\_Recv} para bloquear su ejecución hasta que el mensaje del maestro esté disponible, procediendo entonces a procesar la información y enviar de vuelta un resultado mediante otra operación de envío \cite{ref9_cristian_Gropp1996, ref1_cristian_MPIStandard41}. Esta lógica de cooperación representa la esencia del paralelismo de memoria distribuida y es la base para algoritmos más complejos \cite{ref9_cristian_Gropp1996, ref8_cristian_Nielsen2016}.

@@ -1,4 +1,4 @@
-% ==========================================
+﻿% ==========================================
 % CAPÍTULO 3: DESARROLLO / RESULTADOS Y PRUEBAS
 % ==========================================
 
@@ -34,7 +34,7 @@ En este capítulo se presenta el desarrollo integral del sistema de procesamient
 %
 % 2. Se sugiere describir la ESTRATEGIA DE PARALELIZACIÓN.
 %    - ¿Cómo dividiste el trabajo entre los procesos? (división de dominio,
-%      división de tareas, maestro-esclavo, etc.)
+%      división de tareas, maestro-trabajador, etc.)
 %    - ¿Cuántos procesos usaste y por qué?
 %
 % 3. Opcionalmente, podrías mencionar las FUNCIONES MPI CLAVE que utilizaste.
@@ -49,9 +49,9 @@ En este capítulo se presenta el desarrollo integral del sistema de procesamient
 
 Para dar solución al requerimiento de procesamiento de datos, el problema central consistió en procesar múltiples operaciones aritméticas de forma concurrente, cada una dependiente de un conjunto específico de valores flotantes (a, b y c). En lugar de calcular cada operación de manera secuencial, lo cual subutiliza los recursos de hardware, resulta mucho más adecuado abordar este problema empleando MPI. Esta tecnología permite instanciar múltiples procesos de trabajo independientes que pueden ejecutar sus cálculos matemáticos al mismo tiempo, lo que acelera significativamente la obtención de resultados globales.
 
-La estrategia de paralelización adoptada fue un esquema de maestro-esclavo mediante la división de tareas \cite{ref4_frem}. Para este fin, se emplearon exactamente ocho procesos, ya que la carga de trabajo estipula la evaluación de siete operaciones distintas, requiriendo un proceso adicional que actúe como nodo principal. Las responsabilidades se dividieron de forma jerárquica para optimizar la distribución de flujos de datos a través de la red de interconexión. Por un lado, el Proceso 0, o nodo maestro, contiene la matriz de datos completa, la distribuye fila por fila a los demás nodos, y finalmente recolecta los resultados para imprimirlos de forma ordenada. Por otro lado, los Procesos del 1 al 7 fungen como esclavos, encargándose cada uno de recibir su respectiva carga de trabajo, ejecutar una fórmula matemática única con dichos valores de entrada y retornar el conjunto de variables ya computado directamente de vuelta al procesador maestro.
+La estrategia de paralelización adoptada fue un esquema de maestro-trabajador mediante la división de tareas \cite{ref4_frem}. Para este fin, se emplearon exactamente ocho procesos, ya que la carga de trabajo estipula la evaluación de siete operaciones distintas, requiriendo un proceso adicional que actúe como nodo principal. Las responsabilidades se dividieron de forma jerárquica para optimizar la distribución de flujos de datos a través de la red de interconexión. Por un lado, el Proceso 0, o nodo maestro, contiene la matriz de datos completa, la distribuye fila por fila a los demás nodos, y finalmente recolecta los resultados para imprimirlos de forma ordenada. Por otro lado, los Procesos del 1 al 7 fungen como trabajadores, encargándose cada uno de recibir su respectiva carga de trabajo, ejecutar una fórmula matemática única con dichos valores de entrada y retornar el conjunto de variables ya computado directamente de vuelta al procesador maestro. 
 
-Durante el desarrollo del sistema se emplearon diversas rutinas clave de la biblioteca MPI, cuyo uso fue de carácter fundamental para el acoplamiento de los procesos. En primera instancia, la función \texttt{MPI\_Init} fue utilizada estrictamente para levantar e inicializar el entorno de ejecución paralelo maestro mucho antes de proceder con cualquier manipulación de la red de área local. Seguidamente, las rutinas de interrogación de \texttt{MPI\_Comm\_rank} y \texttt{MPI\_Comm\_size} fueron invocadas de manera complementaria para poder obtener el identificador numérico (rango) particular de cada proceso y validar así que, bajo cualquier circunstancia, se cuente con la presencia activa de los ocho nodos elementales que sostienen el diseño lógico. Por último, la estructura del modelo comunicante se resolvió empleando las primitivas de \texttt{MPI\_Send} y \texttt{MPI\_Recv}, mismas que operaron como interacciones de envío de mensaje de tipo punto a punto. Estas funciones habilitaron que el nodo de supervisión no solo despache en serie los arreglos numéricos junto a un marcador o \textit{token} lógico que sincroniza las peticiones emitidas a los subprocesos de la topología distribuida, sino que adicionalmente facilitaron que este reciba de manera altamente segura el cálculo aritmético resuelto independientemente por la granja de esclavos \cite{ref7_frem}.
+Durante el desarrollo del sistema se emplearon diversas rutinas clave de la biblioteca MPI, cuyo uso fue de carácter fundamental para el acoplamiento de los procesos. En primera instancia, la función \texttt{MPI\_Init} fue utilizada estrictamente para levantar e inicializar el entorno de ejecución paralelo maestro mucho antes de proceder con cualquier manipulación de la red de área local. Seguidamente, las rutinas de interrogación de \texttt{MPI\_Comm\_rank} y \texttt{MPI\_Comm\_size} fueron invocadas de manera complementaria para poder obtener el identificador numérico (rango) particular de cada proceso y validar así que, bajo cualquier circunstancia, se cuente con la presencia activa de los ocho nodos elementales que sostienen el diseño lógico. Por último, la estructura de comunicación se implementó con \texttt{MPI\_Send} y \texttt{MPI\_Recv}, mediante intercambios punto a punto. Gracias a ello, el nodo maestro distribuyó de forma ordenada los arreglos numéricos junto con un \textit{token} de sincronización, y después recibió de cada proceso trabajador el resultado aritmético correspondiente \cite{ref7_frem}.
 
 % TIP: Si tu práctica tiene varios ejercicios, podrías crear una subsección para cada uno:
 %      \subsection{Ejercicio 1: Suma de vectores}
@@ -104,17 +104,21 @@ El núcleo algorítmico del proyecto se apoya en un control estricto de la comun
 \label{fig:codigo_makefile}
 \end{figure}
 
-Por otra parte, dentro del archivo principal escrito en lenguaje C, la inicialización asegura que el programa se abortará de manera limpia si no se proporcionan los ocho procesos requeridos, lo cual previene violaciones de segmento o bloqueos indefinidos. Esta validación temprana, integrada como regla de contención esencial, afianza por completo la estabilidad global de las ejecuciones, cancelándose con toda antelación el despliegue iterativo de fallos críticos cuando ocurren faltantes de componentes en el despliegue del experimento computacional numérico que el nodo maestro controla. Sumado a esto, el algoritmo central se complementa con un pase de tokens (\textit{permiso}) desde el nodo maestro hacia cada esclavo. Este enfoque funcional asegura que los mensajes impresos en la consola aparezcan de forma estrictamente secuencial, evitando que la salida estándar de los distintos subprocesos colisione. Dicha iteración procedimental constante, guiada mediante las etiquetas de envío que gobiernan asíncronamente en el tejido abstracto, representa la fracción computacional fundamental del flujo para diseminar los vectores matemáticos de la entrada entre los procesos que escuchan ávidamente dentro de la topología referenciable. Es precisamente en este contexto donde cobra pleno valor el despliegue algorítmico global. Para mostrar con mayor claridad y detalle esta etapa, el archivo principal se presenta dividido en tres segmentos lógicos sucesivos, cada uno mostrado en dos partes. En primer lugar, las Figuras~\ref{fig:codigo_main_1_sup} y \ref{fig:codigo_main_1_inf} ilustran la validación inicial de procesos junto con la configuración del comunicador global (superior), seguidas de la lógica del nodo maestro distribuyendo los datos y recolectando resultados (inferior). A continuación, las Figuras~\ref{fig:codigo_main_2_sup} y \ref{fig:codigo_main_2_inf} exhiben el procesamiento de los nodos esclavos 1 y 2 (superior), y de los nodos esclavos 3 y 4 (inferior). Finalmente, las Figuras~\ref{fig:codigo_main_3_sup} y \ref{fig:codigo_main_3_inf} muestran el trabajo de los nodos esclavos 5 y 6 (superior), y del nodo esclavo 7 junto con la clausura del entorno MPI (inferior).
+Por otra parte, el archivo principal \texttt{main.c}, cuyo contenido completo se incluye en el Anexo~\ref{chap:codigos_completos}, constituye el núcleo operativo del sistema paralelo, pues en él se definen tanto la estructura de datos compartida como la lógica de comunicación entre el nodo maestro y los siete trabajadores. Al inicio del programa se incluyen las bibliotecas estándar de C junto con \texttt{<mpi.h>}, se establece la constante \texttt{N\_COLUMNAS} con valor 3 y se declaran las variables que gestionarán los identificadores de proceso, los contenedores de mensajes y el estado de las operaciones \cite{ref7_frem}. Estas declaraciones preparan el terreno para que cada proceso, independientemente de su rol posterior, disponga de un espacio de memoria local donde almacenar temporalmente los valores recibidos y los resultados calculados.
+
+Inmediatamente después de las declaraciones, se inicializa el entorno MPI mediante \texttt{MPI\_Init}, obteniéndose el rango del proceso con \texttt{MPI\_Comm\_rank} y el tamaño total del comunicador con \texttt{MPI\_Comm\_size}. Esta etapa es crítica porque cualquier desajuste en el número de procesos comprometería el reparto de trabajo estipulado; por ello, el programa verifica que \texttt{procesos} sea exactamente 8, de lo contrario el nodo 0 imprime un mensaje de error y se invoca \texttt{MPI\_Finalize} para cerrar el entorno de forma controlada. En la Figura~\ref{fig:codigo_main_1_sup} se observa esta primera mitad del código, donde quedan expuestas las directivas de preprocesador, la matriz de datos con los valores $(a,b,c)$ asignados a cada trabajador y la validación inicial que garantiza la integridad del despliegue.
 
 % --- CÓDIGO MAIN 1: PARTE SUPERIOR (inicialización y validación) ---
 \begin{figure}[H]
     \centering
     \adjustbox{trim=0 {0.47\height} 0 0, clip}{
-        \includegraphics[width=0.85\linewidth]{imagenes/Hako/codigo_main_1.png}
+        \includegraphics[width=0.75\linewidth]{imagenes/Hako/codigo_main_1.png}
     }
     \caption{Código principal del sistema \texttt{main.c} --- Segmento 1 (superior): inicialización, validación de procesos y configuración del comunicador global. Fuente: Elaboración propia.}
     \label{fig:codigo_main_1_sup}
 \end{figure}
+
+Una vez superada la verificación, el flujo se bifurca según el valor de \texttt{pid}. Cuando este identificador es 0, el proceso asume el rol de maestro y ejecuta el bloque que distribuye la carga de trabajo. En primer lugar, el maestro imprime un encabezado informativo y entra en un ciclo \texttt{for} que recorre los destinos del 1 al 7; en cada iteración envía mediante \texttt{MPI\_Send} una fila completa de la matriz usando la etiqueta 100, de modo que cada trabajador recibe sus tres valores flotantes sin ambigüedad. Posteriormente, el maestro inicia una segunda fase de sincronización: por cada trabajador, emite un \textit{token} de permiso con etiqueta 150 para desbloquear la impresión ordenada, y acto seguido recibe el resultado numérico mediante \texttt{MPI\_Recv} con etiqueta 200, mostrando en pantalla el valor devuelto junto con la marca de tiempo de MPI. La Figura~\ref{fig:codigo_main_1_inf} presenta precisamente este segmento inferior del archivo, donde se aprecia la dupla de bucles que gobiernan el envío de datos y la recolección secuencial de resultados.
 
 % --- CÓDIGO MAIN 1: PARTE INFERIOR (lógica del maestro) ---
 \begin{figure}[H]
@@ -127,15 +131,19 @@ Por otra parte, dentro del archivo principal escrito en lenguaje C, la inicializ
     \label{fig:codigo_main_1_inf}
 \end{figure}
 
+Del lado de los procesos trabajadores, cada uno ejecuta un bloque condicional exclusivo determinado por su \texttt{pid}. Los nodos 1 y 2 ilustran el patrón común que se repite a lo largo de todo el conjunto: primero reciben su fila de datos mediante \texttt{MPI\_Recv} con etiqueta 100, aplican la operación aritmética que les corresponde y permanecen a la espera del \textit{token} de permiso para escribir en la salida estándar. El nodo 1 calcula la suma $a+b+c$, mientras que el nodo 2 resuelve la expresión $a-b+c$; en ambos casos, tras imprimir los valores recibidos y el resultado obtenido, devuelven la cantidad computada al maestro a través de \texttt{MPI\_Send} con etiqueta 200. Este esquema de recepción-cálculo-espera-envío asegura que cada trabajador opere de forma autónoma y que sus mensajes no se entremezclen en la terminal gracias al control jerárquico del maestro. La Figura~\ref{fig:codigo_main_2_sup} muestra estas dos primeras ramas del bloque condicional, correspondientes a los trabajadores 1 y 2.
+
 % --- CÓDIGO MAIN 2: PARTE SUPERIOR (nodos 1 y 2) ---
 \begin{figure}[H]
     \centering
     \adjustbox{trim=0 {0.50\height} 0 0, clip}{
         \includegraphics[width=0.85\linewidth]{imagenes/Hako/codigo_main_2.png}
     }
-    \caption{Código principal del sistema \texttt{main.c} --- Segmento 2 (superior): procesamiento de los nodos esclavos 1 y 2. Fuente: Elaboración propia.}
+    \caption{Código principal del sistema \texttt{main.c} --- Segmento 2 (superior): procesamiento de los nodos trabajadores 1 y 2. Fuente: Elaboración propia.}
     \label{fig:codigo_main_2_sup}
 \end{figure}
+
+De manera análoga, los nodos 3 y 4 extienden la lógica anterior hacia operaciones de mayor complejidad algebraica. El trabajador 3 realiza el producto $a \cdot b \cdot c$, mientras que el trabajador 4 evalúa la expresión $a \cdot (b+c)$, lo cual exige el uso de paréntesis para respetar la precedencia de operadores en el código fuente. En ambos fragmentos se conserva la misma secuencia de llamadas MPI: recepción de la fila, espera del \textit{token} con etiqueta 150, impresión sincronizada de los mensajes y remisión del resultado al proceso 0 mediante la etiqueta 200. Esta uniformidad en la interfaz de comunicación simplifica considerablemente el diseño del maestro, ya que puede anticipar el tamaño y el tipo de cada mensaje sin necesidad de negociación dinámica. La Figura~\ref{fig:codigo_main_2_inf} captura exactamente estas dos ramas, permitiendo contrastar las diferencias en las fórmulas sin perder de vista la identidad estructural del protocolo.
 
 % --- CÓDIGO MAIN 2: PARTE INFERIOR (nodos 3 y 4) ---
 \begin{figure}[H]
@@ -144,9 +152,11 @@ Por otra parte, dentro del archivo principal escrito en lenguaje C, la inicializ
     \adjustbox{trim=0 0 0 {0.50\height}, clip}{
         \includegraphics[width=0.85\linewidth]{imagenes/Hako/codigo_main_2.png}
     }
-    \caption{Código principal del sistema \texttt{main.c} --- Segmento 2 (inferior): procesamiento de los nodos esclavos 3 y 4. Fuente: Elaboración propia.}
+    \caption{Código principal del sistema \texttt{main.c} --- Segmento 2 (inferior): procesamiento de los nodos trabajadores 3 y 4. Fuente: Elaboración propia.}
     \label{fig:codigo_main_2_inf}
 \end{figure}
+
+Los trabajadores 5 y 6 continúan con la misma metodología, aunque las expresiones que evalúan introducen combinaciones aritméticas que requieren mayor atención en la traducción a instrucciones C. El nodo 5 computa $a \cdot b - b \cdot c$, descomponiendo la operación en dos productos parciales cuyo resultado se resta; por su parte, el nodo 6 eleva al cuadrado la suma $(a+b)$ y multiplica el resultado por $c$, lo cual se implementa replicando el factor $(a+b)$ en lugar de invocar una función de potencia. Ambos procesos respetan el contrato de comunicación previamente establecido: reciben sus valores, esperan el permiso del maestro, imprimen sus mensajes con la marca \texttt{MPI\_Wtime} y envían la respuesta final. En la Figura~\ref{fig:codigo_main_3_sup} se aprecia este par de bloques, donde la legibilidad del código permite identificar claramente las diferencias entre las fórmulas sin perder la homogeneidad del patrón de mensajes.
 
 % --- CÓDIGO MAIN 3: PARTE SUPERIOR (nodos 5 y 6) ---
 \begin{figure}[H]
@@ -154,9 +164,11 @@ Por otra parte, dentro del archivo principal escrito en lenguaje C, la inicializ
     \adjustbox{trim=0 {0.40\height} 0 0, clip}{
         \includegraphics[width=0.85\linewidth]{imagenes/Hako/codigo_main_3.png}
     }
-    \caption{Código principal del sistema \texttt{main.c} --- Segmento 3 (superior): procesamiento de los nodos esclavos 5 y 6. Fuente: Elaboración propia.}
+    \caption{Código principal del sistema \texttt{main.c} --- Segmento 3 (superior): procesamiento de los nodos trabajadores 5 y 6. Fuente: Elaboración propia.}
     \label{fig:codigo_main_3_sup}
 \end{figure}
+
+Finalmente, el nodo 7 cierra el conjunto de trabajadores evaluando la expresión $a^2 - b^2 + c^3$, que se traduce en el código como una serie de multiplicaciones encadenadas para evitar dependencias de bibliotecas matemáticas adicionales. Tras completar su cálculo y enviar el resultado al maestro, el programa alcanza la zona de clausura común a todos los procesos, donde se invoca \texttt{MPI\_Finalize} para liberar los recursos del entorno de paso de mensajes y se retorna el valor 0, indicando una terminación exitosa. Este último paso es indispensable, ya que omitir la finalización correcta de MPI podría dejar procesos zombis o buffers de comunicación sin liberar en el sistema operativo subyacente. La Figura~\ref{fig:codigo_main_3_inf} exhibe la rama del trabajador 7 junto con las instrucciones de cierre, completando así la visión integral del archivo \texttt{main.c}.
 
 % --- CÓDIGO MAIN 3: PARTE INFERIOR (nodo 7 y clausura) ---
 \begin{figure}[H]
@@ -165,7 +177,7 @@ Por otra parte, dentro del archivo principal escrito en lenguaje C, la inicializ
     \adjustbox{trim=0 0 0 {0.60\height}, clip}{
         \includegraphics[width=0.85\linewidth]{imagenes/Hako/codigo_main_3.png}
     }
-    \caption{Código principal del sistema \texttt{main.c} --- Segmento 3 (inferior): procesamiento del nodo esclavo 7 y clausura del entorno MPI. Fuente: Elaboración propia.}
+    \caption{Código principal del sistema \texttt{main.c} --- Segmento 3 (inferior): procesamiento del nodo trabajador 7 y clausura del entorno MPI. Fuente: Elaboración propia.}
     \label{fig:codigo_main_3_inf}
 \end{figure}
 
@@ -214,7 +226,7 @@ Por otra parte, dentro del archivo principal escrito en lenguaje C, la inicializ
 %
 %      Se sugiere verificar que la imagen exista en la carpeta imagenes/.
 
-Las pruebas del aplicativo se llevaron a cabo utilizando el subcomando \texttt{make run}, el cual despliega la instrucción \texttt{mpirun --mca btl \^{}tcp -np 8 ./main}. Esta configuración de lanzamiento permitió instanciar el ecosistema paralelo de manera local. Como se puede apreciar en la evidencia visual adjunta, el estricto apego sobre las invocaciones nativas dirigidas a la implementación de sincronización aseguró con rotunda certeza que todos y cada uno de los distintos nodos se manifestaran en texto plano tras su operación sin entremezclarse. La implementación escalada imprimió de forma exitosa y secuenciada su notificación textual de ingreso de datos y consumación satisfactoria del evento computacional, resultando esto en un control del entorno excepcionalmente limpio. Con base en este comportamiento, en la Figura \ref{fig:salida_mpi} se expone la consola de comandos resultante; allí el nodo cero (maestro) emite los mensajes de distribución y, posteriormente y por turnos, los nodos del uno al siete exhiben la operación realizada junto con la impresión del tiempo actual proporcionado por la herramienta de \texttt{MPI\_Wtime} \cite{ref1_frem}.
+Las pruebas del aplicativo se llevaron a cabo utilizando el subcomando \texttt{make run}, el cual despliega la instrucción \texttt{mpirun --mca btl \^{}tcp -np 8 ./main}. Esta configuración de lanzamiento permitió instanciar el ecosistema paralelo de manera local. Como se puede apreciar en la evidencia visual adjunta, el estricto apego sobre las invocaciones nativas dirigidas a la implementación de sincronización aseguró con rotunda certeza que todos y cada uno de los distintos nodos se manifestaran en texto plano tras su operación sin entremezclarse. La implementación escalada imprimió de forma exitosa y secuenciada su notificación textual de ingreso de datos y consumación satisfactoria del evento computacional, resultando esto en un control del entorno excepcionalmente limpio. Con base en este comportamiento, en la Figura \ref{fig:salida_mpi} se expone la consola de comandos resultante; allí el nodo cero (maestro) emite los mensajes de distribución y, posteriormente y por turnos, los nodos del uno al siete exhiben la operación realizada junto con la impresión del tiempo actual proporcionado por la herramienta de \texttt{MPI\_Wtime} \cite{ref1_frem}. Además, para contrastar el éxito de las pruebas de forma tabular, la Tabla \ref{tab:operaciones} exhibe los tiempos de consistencia y los datos evaluados. Se observa que la paralelización procesa la información eficientemente y entrega resultados matemáticamente correctos para todas las operaciones asignadas.
 
 \begin{figure}[htbp]
 \centering
@@ -223,7 +235,7 @@ Las pruebas del aplicativo se llevaron a cabo utilizando el subcomando \texttt{m
 \label{fig:salida_mpi}
 \end{figure}
 
-Para contrastar el éxito de las pruebas de forma tabular, la Tabla \ref{tab:operaciones} exhibe los tiempos de consistencia y los datos evaluados. Se observa que la paralelización procesa la información eficientemente y entrega resultados matemáticamente correctos para todas las operaciones asignadas.
+
 
 \begin{table}[htbp]
 \centering
@@ -245,3 +257,5 @@ Para contrastar el éxito de las pruebas de forma tabular, la Tabla \ref{tab:ope
 \end{table}
 
 A través del análisis de estos resultados, se valida rotundamente la efectividad de la técnica de paralelización con memoria distribuida en el contexto de la práctica. Asimismo, este bloque final comprueba por completo el alto rendimiento alcanzado al delegar cálculos heterogéneos y dispersos transversalmente sobre un subsistema comunicante que orquesta ordenadamente su diseminación, eliminando posibles estrangulamientos y tiempos muertos de resolución en secuencias ordinarias.
+
+
